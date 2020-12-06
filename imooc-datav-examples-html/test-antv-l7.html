@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AntV L7</title>
+    <script src="https://unpkg.com/@antv/l7"></script>
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="l7-map"></div>
+    <script>
+      const scene = new L7.Scene({
+        id: 'l7-map',
+        map: new L7.GaodeMap({
+          style: 'dark',
+          center: [120.19382669582967, 30.258134],
+          pitch: 0, // 俯视仰角
+          zoom: 6,
+          token: 'e8653883477c1e38d190463340771816'
+        })
+      })
+
+      scene.on('loaded', function () {
+        fetch('https://gw.alipayobjects.com/os/basement_prod/337ddbb7-aa3f-4679-ab60-d64359241955.json')
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+            data.features = data.features.filter(item => item.properties.capacity > 1000)
+            const pointLayer = new L7.PointLayer({})
+              .source(data)
+              .shape('circle')
+              .size('capacity', [0, 16])
+              .color('capacity', ['#34B6B7', '#4AC5AF', '#5FD3A6', '#7BE39E', '#A1EDB8', '#CEF8D6'])
+              .style({
+                strokeWidth: 0,
+                opacity: 0.5
+              })
+              .active(true)
+
+            scene.addLayer(pointLayer)
+          })
+      })
+
+      /**
+      * Antv L7 的绘图流程是怎样的？
+      *    1. 引入 js 库
+      *    2. 编写渲染容器 DOM
+      *    3. 初始化地图对象 L7.Scene
+      *    4. 请求数据
+      *    5. 数据清洗
+      *    6. 初始化绘图对象（如：L7.PointLayer）
+      *    7. 调用 L7.Scene.addLayer 方法绘图
+      */
+    </script>
+  </body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Highmaps</title>
+  <script src="https://code.highcharts.com.cn/jquery/jquery-1.8.3.min.js"></script>
+  <script src="https://code.highcharts.com.cn/highmaps/highmaps.js"></script>
+</head>
+<body>
+  <script src="https://img.hcharts.cn/mapdata/countries/us/us-all.js"></script>
+  <div id="container" style="height: 500px; min-width: 310px; max-width: 600px; margin: 0 auto"></div>
+  <script>
+    $.getJSON('https://data.jianshukeji.com/jsonp?filename=json/us-population-density.json&callback=?', function(data) {
+      console.log(data);
+      // Make codes uppercase to match the map data
+      $.each(data, function() {
+        this.code = this.code.toUpperCase()
+      })
+      // Instanciate the map
+      Highcharts.mapChart('container', {
+        chart: {
+          borderWidth: 1
+        },
+        title: {
+          text: 'US population density (/km²)'
+        },
+        legend: {
+          layout: 'horizontal',
+          borderWidth: 0,
+          backgroundColor: 'rgba(255,255,255,0.85)',
+          floating: true,
+          verticalAlign: 'top',
+          y: 25
+        },
+        mapNavigation: {
+          enabled: true
+        },
+        colorAxis: {
+          min: 1,
+          type: 'logarithmic',
+          minColor: '#EEEEFF',
+          maxColor: '#000022',
+          stops: [
+            [0, '#EFEFFF'],
+            [0.67, '#4444FF'],
+            [1, '#000022']
+          ]
+        },
+        series: [{
+          animation: {
+            duration: 1000
+          },
+          data: data,
+          mapData: Highcharts.maps['countries/us/us-all'],
+          joinBy: ['postal-code', 'code'],
+          dataLabels: {
+            enabled: true,
+            color: 'white',
+            format: '{point.code}'
+          },
+          name: 'Population density',
+          tooltip: {
+            pointFormat: '{point.code}: {point.value}/km²'
+          }
+        }]
+      })
+    })
+  </script>
+</body>
+</html>
