@@ -17,9 +17,19 @@
     <script>
       const chartDom = document.getElementById('chart')
       const chart = echarts.init(chartDom)
+      // http://www.youbaobao.xyz/datav-docs/guide/guide/echarts-basic.html
       chart.setOption({
+        dataset: {
+          source: [
+            ['一季度', 100, 79, '分类1', 50],
+            ['二季度', 112, 81, '分类2', 60],
+            ['三季度', 96, 88, '分类3', 55],
+            ['四季度', 123, 72, '分类4', 70]
+          ]
+        },
         title: {
-          text: 'ECharts 多系列案例'
+          text: 'ECharts 多系列案例',
+          subtext: '慕课网数据可视化课程'
         },
         xAxis: {
           data: ['一季度', '二季度', '三季度', '四季度']
@@ -31,22 +41,17 @@
             type: 'pie',
             center: ['65%', 60],
             radius: 35,
-            data: [
-            { name: '分类一', value: 50 },
-            { name: '分类二', value: 60 },
-            { name: '分类三', value: 55 },
-            { name: '分类四', value: 70 }
-            ]
+            encode: { itemName: 3, value: 4 }
           },
           {
             name: '折线图',
             type: 'line',
-            data: [100, 120, 90, 150]
+            encode: { x: 0, y: 1 }
           },
           {
             name: '柱状图',
             type: 'bar',
-            data: [79, 81, 88, 72]
+            encode: { x: 0, y: 2 }
           }
         ]
       })
