@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ECharts 坐标系</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@4.7.0/dist/echarts.js"></script>
+    <style>
+      #chart {
+        width: 800px;
+        height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+      const chartDom = document.getElementById('chart')
+      const chart = echarts.init(chartDom)
+      // http://www.youbaobao.xyz/datav-docs/guide/guide/echarts-basic.html
+      // chart.setOption({
+      //   dataset: {
+      //     source: [
+      //       [13, 44],
+      //       [51, 51],
+      //       [51, 32],
+      //       [69, 19],
+      //       [19, 33]
+      //     ]
+      //   },
+      //   xAxis: {},
+      //   yAxis: {},
+      //   series: [
+      //     {
+      //       name: '散点图',
+      //       type: 'scatter',
+      //       encode: { x: 0, y: 1 }
+      //     }
+      //   ]
+      // })
+
+      // chart.setOption({
+      //   dataset: {
+      //     source: [
+      //       ['product', '2012', '2013', '2014', '2015'],
+      //       ['Matcha Latte', 41.1, 30.4, 65.1, 53.3],
+      //       ['Milk Tea', 86.5, 92.1, 85.7, 83.1]
+      //     ]
+      //   },
+      //   xAxis: {
+      //     type: 'category'
+      //   },
+      //   yAxis: [
+      //     {
+      //       min: 0,
+      //       max: 100
+      //     },
+      //     {
+      //       splitLine: {
+      //         show: false
+      //       }
+      //     }
+      //   ],
+      //   series: [
+      //     {
+      //       type: 'bar',
+      //       seriesLayoutBy: 'row',
+      //       yAxisIndex: 0
+      //     },
+      //     {
+      //       type: 'line',
+      //       seriesLayoutBy: 'row',
+      //       yAxisIndex: 1
+      //     }
+      //   ]
+      // })
+
+      chart.setOption({
+        dataset: {
+          source: [
+            ['product', '2012', '2013', '2014', '2015'],
+            ['Matcha Latte', 41.1, 30.4, 65.1, 53.3],
+            ['Milk Tea', 86.5, 92.1, 85.7, 83.1]
+          ]
+        },
+        xAxis: [
+          {
+            type: 'category',
+            gridIndex: 0
+          },
+          {
+            type: 'category',
+            gridIndex: 1
+          }
+        ],
+        yAxis: [
+          {
+            min: 0,
+            max: 100,
+            gridIndex: 0
+          },
+          {
+            splitLine: {
+              show: false
+            },
+            gridIndex: 0
+          },
+          {
+            min: 0,
+            max: 150,
+            gridIndex: 1
+          }
+        ],
+        grid: [{ bottom: '55%' }, { top: '55%' }],
+        series: [
+          {
+            type: 'bar',
+            seriesLayoutBy: 'row',
+            xAxisIndex: 0,
+            yAxisIndex: 0
+          },
+          {
+            type: 'line',
+            seriesLayoutBy: 'row',
+            xAxisIndex: 0,
+            yAxisIndex: 1
+          },
+          {
+            type: 'bar',
+            seriesLayoutBy: 'row',
+            xAxisIndex: 1,
+            yAxisIndex: 2
+          }
+        ]
+      })
+    </script>
+  </body>
+</html>
