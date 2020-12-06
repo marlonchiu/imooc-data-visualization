@@ -35,6 +35,33 @@
           data: ['一季度', '二季度', '三季度', '四季度']
         },
         yAxis: {},
+        legend: {
+          data: [{
+            name: '分类',
+            icon: 'circle',
+            textStyle: {
+              color: 'red'
+            }
+          }, '折线图', '柱状图'],
+          left: 200
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {},
+            dataZoom: {
+              // 不选取坐标轴
+              yAxisIndex: false
+            },
+            restore: {}
+          }
+        },
+        dataZoom: [
+          {
+            show: true,
+            start: 30,
+            end: 70
+          }
+        ],
         series: [
           {
             name: '分类',
