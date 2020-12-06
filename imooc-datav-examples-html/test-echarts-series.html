@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ECharts 多系列</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@4.7.0/dist/echarts.js"></script>
+    <style>
+      #chart {
+        width: 800px;
+        height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart"></div>
+    <script>
+      const chartDom = document.getElementById('chart')
+      const chart = echarts.init(chartDom)
+      chart.setOption({
+        title: {
+          text: 'ECharts 多系列案例'
+        },
+        xAxis: {
+          data: ['一季度', '二季度', '三季度', '四季度']
+        },
+        yAxis: {},
+        series: [
+          {
+            name: '分类',
+            type: 'pie',
+            center: ['65%', 60],
+            radius: 35,
+            data: [
+            { name: '分类一', value: 50 },
+            { name: '分类二', value: 60 },
+            { name: '分类三', value: 55 },
+            { name: '分类四', value: 70 }
+            ]
+          },
+          {
+            name: '折线图',
+            type: 'line',
+            data: [100, 120, 90, 150]
+          },
+          {
+            name: '柱状图',
+            type: 'bar',
+            data: [79, 81, 88, 72]
+          }
+        ]
+      })
+    </script>
+  </body>
+</html>
