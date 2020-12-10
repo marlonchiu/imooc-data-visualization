@@ -11,7 +11,9 @@
     "core-js": "^3.6.5",
     "echarts": "^4.7.0",
     "element-ui": "^2.4.5",
+    "v-charts": "^1.19.0",
     "vue": "^2.6.11",
+    "vue-echarts": "^5.0.0-beta.0",
     "vue-router": "^3.2.0"
   },
   "devDependencies": {
