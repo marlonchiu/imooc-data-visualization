@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { screenDataRequest } from '../api'
 import TopView from '../components/TopView'
 import SalesView from '../components/SalesView'
 import BottomView from '../components/BottomView'
@@ -20,6 +21,10 @@ export default {
     SalesView,
     BottomView,
     MapView
+  },
+  async mounted() {
+    const screenData = await screenDataRequest()
+    console.log(screenData)
   }
 }
 </script>
