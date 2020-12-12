@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>百度进阶 - 轨迹动画</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=iXRkUtPeRZyOXFSFT09iswhBmtkbhUpl"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/library/TrackAnimation/src/TrackAnimation_min.js"></script>
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #container {
+        position: relative;
+        height: 100%;
+      }
+      #tools {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <div id="tools">
+      <button id="start">播放动画</button>
+      <button id="end">停止播放</button>
+    </div>
+    <script>
+      // GL版命名空间为BMapGL
+      // 按住鼠标右键，修改倾斜角和角度
+
+      // 创建Map实例
+      var map = new BMapGL.Map('container')
+      var point = new BMapGL.Point(116.297611, 40.047363)
+      // 初始化地图,设置中心点坐标和地图级别
+      map.centerAndZoom(point, 16)
+      map.enableScrollWheelZoom(true) //开启鼠标滚轮缩放
+      // var points = [new BMapGL.Point(116.418038, 39.91979), new BMapGL.Point(116.418267, 40.059246), new BMapGL.Point(116.307899, 40.057038)]
+      // var lines = new BMapGL.Polyline(points)
+
+      var opts = {
+        duration: 12000, // 动画持续时长，默认为10000，单位ms
+        delay: 1000, // 动画开始的延迟，默认0，单位ms
+        overallView: true, // 动画完成后自动调整视野到总览
+        tilt: 30 // 轨迹播放的角度，默认为55
+      }
+      var path = [
+        {
+          lng: 116.297611,
+          lat: 40.047363
+        },
+        {
+          lng: 116.302839,
+          lat: 40.048219
+        },
+        {
+          lng: 116.308301,
+          lat: 40.050566
+        },
+        {
+          lng: 116.305732,
+          lat: 40.054957
+        },
+        {
+          lng: 116.304754,
+          lat: 40.057953
+        },
+        {
+          lng: 116.306487,
+          lat: 40.058312
+        },
+        {
+          lng: 116.307223,
+          lat: 40.056379
+        }
+      ]
+      var points = []
+      for (var i = 0; i < path.length; i++) {
+        points.push(new BMapGL.Point(path[i].lng, path[i].lat))
+      }
+      var lines = new BMapGL.Polyline(points)
+
+      var trackAnimation = new BMapGLLib.TrackAnimation(map, lines, opts)
+
+      document.getElementById('start').addEventListener('click', function () {
+        trackAnimation.start()
+      })
+      document.getElementById('end').addEventListener('click', function () {
+        trackAnimation.cancel()
+      })
+    </script>
+  </body>
+</html>

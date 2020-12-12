@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>百度进阶 - 动画</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=iXRkUtPeRZyOXFSFT09iswhBmtkbhUpl"></script>
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #container {
+        position: relative;
+        height: 100%;
+      }
+      #tools {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1000;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <div id="tools">
+      <button id="start">播放动画</button>
+      <button id="end">停止播放</button>
+    </div>
+    <script>
+      // GL版命名空间为BMapGL
+      // 按住鼠标右键，修改倾斜角和角度
+
+      // 创建Map实例
+      var map = new BMapGL.Map('container')
+      var point = new BMapGL.Point(116.414, 39.915)
+      // 初始化地图,设置中心点坐标和地图级别
+      map.centerAndZoom(point, 18)
+      map.enableScrollWheelZoom(true) //开启鼠标滚轮缩放
+      map.setTilt(50)
+      map.setHeading(20)
+
+      // http://lbsyun.baidu.com/cms/jsapi/reference/jsapi_webgl_1_0.html#a7b0
+      var keyFrames = [
+        {
+          center: new BMapGL.Point(116.307092, 40.054922),
+          zoom: 20,
+          tilt: 50,
+          heading: 0,
+          percentage: 0
+        },
+        {
+          center: new BMapGL.Point(116.307631, 40.055391),
+          zoom: 21,
+          tilt: 70,
+          heading: 0,
+          percentage: 0.1
+        },
+        {
+          center: new BMapGL.Point(116.306858, 40.057887),
+          zoom: 21,
+          tilt: 70,
+          heading: 0,
+          percentage: 0.25
+        },
+        {
+          center: new BMapGL.Point(116.306858, 40.057887),
+          zoom: 21,
+          tilt: 70,
+          heading: -90,
+          percentage: 0.35
+        },
+        {
+          center: new BMapGL.Point(116.307904, 40.058118),
+          zoom: 21,
+          tilt: 70,
+          heading: -90,
+          percentage: 0.45
+        },
+        {
+          center: new BMapGL.Point(116.307904, 40.058118),
+          zoom: 21,
+          tilt: 70,
+          heading: -180,
+          percentage: 0.55
+        },
+        {
+          center: new BMapGL.Point(116.308902, 40.055954),
+          zoom: 21,
+          tilt: 70,
+          heading: -180,
+          percentage: 0.75
+        },
+        {
+          center: new BMapGL.Point(116.308902, 40.055954),
+          zoom: 21,
+          tilt: 70,
+          heading: -270,
+          percentage: 0.85
+        },
+        {
+          center: new BMapGL.Point(116.307779, 40.055754),
+          zoom: 21,
+          tilt: 70,
+          heading: -360,
+          percentage: 0.95
+        },
+        {
+          center: new BMapGL.Point(116.307092, 40.054922),
+          zoom: 20,
+          tilt: 50,
+          heading: -360,
+          percentage: 1
+        }
+      ]
+      var options = {
+        duration: 10000, // 设置每次迭代动画持续时间
+        delay: 3000, // 设置动画延迟开始时间
+        interation: 'INFINITE' // 设置动画迭代次数
+      }
+      var animation = new BMapGL.ViewAnimation(keyFrames, options)
+
+      animation.addEventListener('animationstart', function (e) {
+        // 监听动画开始事件
+        console.log('start')
+      })
+      animation.addEventListener('animationiterations', function (e) {
+        // 监听动画迭代事件
+        console.log('onanimationiterations')
+      })
+      animation.addEventListener('animationend', function (e) {
+        // 监听动画结束事件
+        console.log('end')
+      })
+      animation.addEventListener('animationcancel', function (e) {
+        // 监听动画中途被终止事件
+        console.log('cancel')
+      })
+      document.getElementById('start').addEventListener('click', function () {
+        map.startViewAnimation(animation) // 开始播放动画
+      })
+      document.getElementById('end').addEventListener('click', function () {
+        map.cancelViewAnimation(animation) // 强制停止动画
+      })
+    </script>
+  </body>
+</html>

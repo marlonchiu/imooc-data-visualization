@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>百度进阶 - 地图绘图</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=iXRkUtPeRZyOXFSFT09iswhBmtkbhUpl"></script>
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #container {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      // GL版命名空间为BMapGL
+      // 按住鼠标右键，修改倾斜角和角度
+
+      // 创建Map实例
+      console.log(window.BMapGL)
+      var map = new BMapGL.Map('container')
+      var point = new BMapGL.Point(116.404, 39.915)
+      // 初始化地图,设置中心点坐标和地图级别
+      map.centerAndZoom(point, 12)
+      map.enableScrollWheelZoom(true) //开启鼠标滚轮缩放
+      map.setMapStyleV2({
+        styleId: 'd0cbfdca87143e226924f4e3736ebf3c'
+      })
+
+      // var marker = new BMapGL.Marker(point) // 创建标注
+      // map.addOverlay(marker) // 将标注添加到地图中
+
+      // 自定义 绘制图标
+      var myIcon = new BMapGL.Icon('https://www.youbaobao.xyz/datav-res/datav/location.png', new BMapGL.Size(60, 60), {
+        anchor: new BMapGL.Size(30, 30),
+        imageOffset: new BMapGL.Size(0, 0)
+      })
+      // 创建标注对象并添加到地图
+      var marker = new BMapGL.Marker(point, { icon: myIcon })
+      marker.addEventListener('click', function (e) {
+        // var infoWindow = new BMapGL.InfoWindow('欢迎学习数据可视化体系课程', {
+        //   width: 300,
+        //   height: 100,
+        //   title: '说明',
+        //   offset: new BMapGL.Size(0, 10)
+        // })
+        var content = '欢迎学习数据可视化体系课程'
+        var div = document.createElement('div')
+        div.style.color = 'red'
+        div.innerText = content
+        var infoWindow = new BMapGL.InfoWindow(div, {
+          width: 300,
+          height: 100,
+          title: '说明',
+          offset: new BMapGL.Size(0, 10)
+        })
+        map.openInfoWindow(infoWindow, point)
+      })
+      map.addOverlay(marker)
+
+      // 自定义 绘制线段
+      // http://lbsyun.baidu.com/cms/jsapi/reference/jsapi_webgl_1_0.html#a3b10
+      // var polyline = new BMapGL.Polyline([new BMapGL.Point(116.5, 39.8), new BMapGL.Point(117.55, 39.82), new BMapGL.Point(117.55, 40.82)], {
+      //   strokeColor: 'blue',
+      //   strokeWeight: 2,
+      //   strokeOpacity: 0.5
+      // })
+      // map.addOverlay(polyline)
+
+      // 自定义 多边形
+      // http://lbsyun.baidu.com/cms/jsapi/reference/jsapi_webgl_1_0.html#a3b12
+      var polygon = new BMapGL.Polygon(
+        [new BMapGL.Point(116.5, 39.8), new BMapGL.Point(116.75, 39.82), new BMapGL.Point(116.55, 40.0), new BMapGL.Point(116.48, 40.0)],
+        {
+          strokeColor: 'blue',
+          fillColor: 'red',
+          strokeWeight: 2,
+          strokeOpacity: 0.5
+        }
+      )
+      map.addOverlay(polygon)
+
+      // 自定义 文本
+      // http://lbsyun.baidu.com/cms/jsapi/reference/jsapi_webgl_1_0.html#a3b12
+      var content = '欢迎学习数据可视化体系课'
+      var label = new BMapGL.Label(content, {
+        position: point,
+        offset: new BMapGL.Size(200, 20)
+      })
+      label.setStyle({
+        width: '100px',
+        // height: '20px',
+        lineHeight: '20px',
+        padding: '20px',
+        color: '#fff',
+        background: '#0f0',
+        fontSize: '14px',
+        whiteSpace: 'wrap',
+        overflow: 'hidden'
+      })
+      label.addEventListener('click', function (e) {
+        alert(e.target.content)
+      })
+      map.addOverlay(label)
+    </script>
+  </body>
+</html>
