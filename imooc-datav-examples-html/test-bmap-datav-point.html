@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>百度进阶 - 散点图</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=iXRkUtPeRZyOXFSFT09iswhBmtkbhUpl"></script>
+    <script src="https://mapv.baidu.com/gl/examples/static/common.js"></script>
+    <script src="https://mapv.baidu.com/build/mapv.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.min.js"></script>
+
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #map_container {
+        position: relative;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map_container"></div>
+    <script>
+      var cities = ['上海']
+      var cityCenter = mapv.utilCityCenter.getCenterByCityName(cities[0])
+      console.log(cityCenter)
+      // 创建Map实例
+      var map = initMap({
+        tilt: 0,
+        heading: 0,
+        // center: [121.479965, 31.235188],
+        center: [cityCenter.lng, cityCenter.lat],
+        zoom: 16,
+        style: snowStyle
+      })
+      // 绘制散点
+      // 1. 准备数据源
+      var data = []
+      data.push({
+        geometry: {
+          type: 'Point',
+          coordinates: [cityCenter.lng, cityCenter.lat]
+        }
+      })
+      // 2. 绘制数据源
+      // http://lbsyun.baidu.com/solutions/solutions/mapvdata
+      // 2.1 生成 mapvgl 视图 view
+      var view = new mapvgl.View({ map })
+      // 2.2 初始化 mapvgl 的 PointLayer 对象
+      var pointLayer = new mapvgl.PointLayer({})
+      // 2.3 将 PointLayer 对象加入 view 中
+      view.addLayer(pointLayer)
+      // 2.4 将 data 与 PointLayer 进行绑定
+      pointLayer.setData(data)
+    </script>
+  </body>
+</html>

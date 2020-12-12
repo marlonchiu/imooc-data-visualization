@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>百度进阶 - 3D建筑</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=iXRkUtPeRZyOXFSFT09iswhBmtkbhUpl"></script>
+    <script src="https://mapv.baidu.com/gl/examples/static/common.js"></script>
+    <script src="https://mapv.baidu.com/build/mapv.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.min.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.threelayers.min.js"></script>
+
+    <style type="text/css">
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #map_container {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map_container"></div>
+    <script>
+      var map = initBMap()
+      var data = initData()
+      setData(map, data)
+
+      // 1. 初始化百度地图
+      function initBMap() {
+        var cityCenter = mapv.utilCityCenter.getCenterByCityName('北京')
+        // 创建Map实例
+        var map = initMap({
+          tilt: 80,
+          heading: -45.3,
+          center: [cityCenter.lng, cityCenter.lat],
+          zoom: 17
+        })
+        return map
+      }
+
+      // 2. 准备数据源 (墨卡托坐标转换)
+      function initData() {
+        var data = [
+          {
+            geometry: {
+              type: 'Polygon',
+              coordinates: [
+                [
+                  // [116.392394, 39.910683],
+                  // [116.405976, 39.927727],
+                  // [116.420996, 39.910351]
+                  // 墨卡托坐标
+                  // http://lbsyun.baidu.com/index.php?title=webapi/guide/changeposition
+                  [12958287.560934239, 4826420.121990554],
+                  [12959801.63393129, 4828874.558443741],
+                  [12961481.9187227, 4826328.322460731]
+                ]
+              ]
+            },
+            properties: {
+              height: 100 // 多边形高度
+            }
+          }
+        ]
+        return data
+      }
+
+      // 3. 绘制数据源
+      function setData(map, data) {
+        var view = new mapvgl.View({ map: map })
+        var shapeLayer = new mapvgl.ShapeLayer({
+          color: 'rgba(194, 147, 75, 0.8)', // 柱状图颜色
+          opacity: 0.3,
+          enablePicked: true, // 是否可以拾取
+          selectedIndex: -1, // 选中项
+          selectedColor: '#ee1111', // 选中项颜色
+          autoSelect: true, // 根据鼠标位置来自动设置选中项
+          onClick: e => {
+            // 点击事件
+            console.log(e)
+          }
+        })
+        view.addLayer(shapeLayer)
+        shapeLayer.setData(data)
+      }
+    </script>
+  </body>
+</html>

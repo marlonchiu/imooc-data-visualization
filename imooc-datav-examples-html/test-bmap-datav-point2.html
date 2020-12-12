@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>百度进阶 - 散点图</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=iXRkUtPeRZyOXFSFT09iswhBmtkbhUpl"></script>
+    <script src="https://mapv.baidu.com/gl/examples/static/common.js"></script>
+    <script src="https://mapv.baidu.com/build/mapv.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.min.js"></script>
+
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #map_container {
+        position: relative;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map_container"></div>
+    <script>
+      var map = initBMap()
+      var data = initData()
+      setData(map, data)
+
+      // 0. 初始化百度地图
+      function initBMap() {
+        var cityCenter = mapv.utilCityCenter.getCenterByCityName('北京')
+        // 创建Map实例
+        var map = initMap({
+          tilt: 0,
+          heading: 0,
+          // center: [121.479965, 31.235188],
+          center: [cityCenter.lng, cityCenter.lat],
+          zoom: 8,
+          style: snowStyle
+        })
+        return map
+      }
+
+      // 绘制散点
+      // 1. 准备数据源
+      function initData() {
+        var cities = [
+          '北京',
+          '天津',
+          '上海',
+          '重庆',
+          '石家庄',
+          '太原',
+          '呼和浩特',
+          '哈尔滨',
+          '长春',
+          '沈阳',
+          '济南',
+          '南京',
+          '合肥',
+          '杭州',
+          '南昌',
+          '福州',
+          '郑州',
+          '武汉',
+          '长沙',
+          '广州',
+          '南宁',
+          '西安',
+          '银川',
+          '兰州',
+          '西宁',
+          '乌鲁木齐',
+          '成都',
+          '贵阳',
+          '昆明',
+          '拉萨',
+          '海口'
+        ]
+
+        var data = []
+        var randomCount = 700
+        while (randomCount--) {
+          var cityCenter = mapv.utilCityCenter.getCenterByCityName(cities[parseInt(Math.random() * cities.length, 10)])
+          data.push({
+            geometry: {
+              type: 'Point',
+              coordinates: [cityCenter.lng - 2 + Math.random() * 4, cityCenter.lat - 2 + Math.random() * 4]
+            },
+            properties: {
+              count: Math.random() * 100
+            }
+          })
+        }
+        // console.log(data);
+        // data = data.filter(_ => _.properties.count > 50)
+        return data
+      }
+
+      // 3. 绘制数据源
+      function setData(map, data) {
+        // 2 初始化 Intensity 对象(控制散点的大小和颜色)
+        var intensity = new mapvgl.Intensity({
+          max: 100,
+          min: 0,
+          gradient: {
+            0: 'rgb(25, 66, 102, 0.8)',
+            0.3: 'rgb(145, 102, 129, 0.8)',
+            0.7: 'rgb(210, 131, 137, 0.8)',
+            1: 'rgb(248, 177, 149, 0.8)'
+          },
+          maxSize: 30,
+          minSize: 5
+        })
+        // http://lbsyun.baidu.com/solutions/solutions/mapvdata
+        // 3.1 生成 mapvgl 视图 view
+        var view = new mapvgl.View({ map: map })
+        // 3.2 初始化 mapvgl 的 PointLayer 对象
+        var pointLayer = new mapvgl.PointLayer({
+          blend: 'lighter',
+          size: function (data) {
+            // console.log(intensity.getSize(data.properties.count))
+            return intensity.getSize(data.properties.count)
+          },
+          color: function (data) {
+            return intensity.getColor(data.properties.count)
+          }
+        })
+        // 3.3 将 PointLayer 对象加入 view 中
+        view.addLayer(pointLayer)
+        // 3.4 将 data 与 PointLayer 进行绑定
+        pointLayer.setData(data)
+      }
+
+      /**
+       * todo 百度地图mapv开发流程是怎样的？
+       * 1. 引入 js 库
+       *    百度地图 js
+       *    百度地图 mapv
+       *    百度地图 mapvgl
+       * 2. 编写容器组件
+       * 3. 初始化 Map 对象
+       * 4. 初始化绘制数据，数据格式为：
+       * 5. 初始化 mapvgl.View 图层管理器
+       * 6. 初始化 mapvgl.Intensity 数据显示强度
+       * 7. 初始化 mapvgl.PointLayer 图层
+       * 8. 调用 view.addLayer 添加图层到图层管理器
+       * 9. 调用 mapvgl.PointLayer.setData 关联图层和数据
+      */
+    </script>
+  </body>
+</html>

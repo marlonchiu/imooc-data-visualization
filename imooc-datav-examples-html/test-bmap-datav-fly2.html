@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>百度进阶 - 酷炫飞线动画（官方示例）</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=iXRkUtPeRZyOXFSFT09iswhBmtkbhUpl"></script>
+    <script src="https://mapv.baidu.com/gl/examples/static/common.js"></script>
+    <script src="https://mapv.baidu.com/build/mapv.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.min.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.threelayers.min.js"></script>
+
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #map_container {
+        position: relative;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map_container"></div>
+    <script>
+      var map = initBMap()
+      var data = initData()
+      setData(map, data)
+
+      // 1. 初始化百度地图
+      function initBMap() {
+        var cityCenter = mapv.utilCityCenter.getCenterByCityName('北京')
+        // 创建Map实例
+        var map = initMap({
+          tilt: 0,
+          heading: 0,
+          center: [cityCenter.lng, cityCenter.lat],
+          zoom: 5,
+          style: purpleStyle
+        })
+        return map
+      }
+
+      // 2. 准备数据源
+      function initData() {
+        var data = []
+        var cities = [
+          '北京',
+          '天津',
+          '上海',
+          '重庆',
+          '石家庄',
+          '太原',
+          '呼和浩特',
+          '哈尔滨',
+          '长春',
+          '沈阳',
+          '济南',
+          '南京',
+          '合肥',
+          '杭州',
+          '南昌',
+          '福州',
+          '郑州',
+          '武汉',
+          '长沙',
+          '广州',
+          '南宁',
+          '西安',
+          '银川',
+          '兰州',
+          '西宁',
+          '乌鲁木齐',
+          '成都',
+          '贵阳',
+          '昆明',
+          '拉萨',
+          '海口'
+        ]
+        var randomCount = 100 // 模拟的飞线的数量
+        var targetCity = mapv.utilCityCenter.getCenterByCityName('北京')
+        var curve = new mapvgl.BezierCurve()
+        for (var i = 1; i < cities.length; i++) {
+          var startCity = mapv.utilCityCenter.getCenterByCityName(cities[i])
+          curve.setOptions({
+            start: [startCity.lng, startCity.lat],
+            end: [targetCity.lng, targetCity.lat]
+          })
+          // 3.生成贝塞尔曲线坐标集
+          var curveData = curve.getPoints()
+          data.push({
+            geometry: {
+              type: 'LineString',
+              coordinates: curveData
+            }
+          })
+        }
+        return data
+      }
+
+      // 3. 绘制数据源
+      function setData(map, data) {
+        var view = new mapvgl.View({ map: map })
+        var lineLayer = new mapvgl.LineLayer({
+          color: 'rgba(55, 50, 250, 0.3)',
+          blend: 'lighter'
+        })
+        view.addLayer(lineLayer)
+        lineLayer.setData(data)
+
+        // https://mapv.baidu.com/gl/examples/editor.html#line-point.html
+        var linePointLayer = new mapvgl.LinePointLayer({
+          size: 8,
+          speed: 20,
+          color: 'rgba(255, 255, 0, 0.6)',
+          animationType: mapvgl.LinePointLayer.ANIMATION_TYPE_SMOOTH,
+          shapeType: mapvgl.LinePointLayer.SHAPE_TYPE_CIRCLE,
+          blend: 'lighter'
+        })
+        view.addLayer(linePointLayer)
+        linePointLayer.setData(data)
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>百度进阶 - 飞线动画</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&&type=webgl&ak=iXRkUtPeRZyOXFSFT09iswhBmtkbhUpl"></script>
+    <script src="https://mapv.baidu.com/gl/examples/static/common.js"></script>
+    <script src="https://mapv.baidu.com/build/mapv.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.min.js"></script>
+    <script src="https://code.bdstatic.com/npm/mapvgl@1.0.0-beta.54/dist/mapvgl.threelayers.min.js"></script>
+
+    <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+      }
+      #map_container {
+        position: relative;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map_container"></div>
+    <script>
+      var map = initBMap()
+      var data = initData()
+      setData(map, data)
+
+      // 1. 初始化百度地图
+      function initBMap() {
+        var cityCenter = mapv.utilCityCenter.getCenterByCityName('上海')
+        // 创建Map实例
+        var map = initMap({
+          tilt: 30,
+          heading: 0,
+          center: [cityCenter.lng, cityCenter.lat],
+          zoom: 6,
+          style: purpleStyle
+        })
+        return map
+      }
+
+      // 2. 准备数据源
+      function initData() {
+        var data = []
+        var cities = [
+          '北京', '天津', '上海', '重庆', '石家庄', '太原', '呼和浩特', '哈尔滨', '长春',
+          '沈阳', '济南', '南京', '合肥', '杭州', '南昌', '福州', '郑州', '武汉', '长沙', '广州',
+          '南宁', '西安', '银川', '兰州', '西宁', '乌鲁木齐', '成都', '贵阳', '昆明', '拉萨', '海口'
+        ];
+	      var randomCount = 100; // 模拟的飞线的数量
+        // 生成带高度的贝塞尔曲线坐标集，可以用来生成飞线数据
+        //  1. 实例化贝塞尔曲线对象
+        var curve = new mapvgl.BezierCurve()
+
+        // 2.设置起点和终点坐标
+        while(randomCount--) {
+          var start = mapv.utilCityCenter.getCenterByCityName(cities[parseInt(Math.random() * cities.length, 10)])
+          var end = mapv.utilCityCenter.getCenterByCityName(cities[parseInt(Math.random() * cities.length, 10)])
+          curve.setOptions({
+            start: [start.lng, start.lat],
+            end: [end.lng, end.lat]
+          })
+          // 3.生成贝塞尔曲线坐标集
+          var curveData = curve.getPoints()
+          console.log(curveData)
+          data.push({
+            geometry: {
+              type: 'LineString',
+              coordinates: curveData
+            },
+            properties: {
+              count: Math.random()
+            }
+          })
+        }
+
+        return data
+      }
+
+      // 3. 绘制数据源
+      function setData(map, data) {
+        // 1) 初始化图层
+        var view = new mapvgl.View({
+          map: map
+        })
+        // 2) 初始化飞线对象
+        var flyLineLayer = new mapvgl.FlyLineLayer({
+          style: 'chaos',
+          color: 'rgba(33, 242, 214, 0.3)',
+          textureColor: function (data) {
+            return data.properties.count > 0.5 ? '#ff0000' : '#56ccdd';
+          },
+          textureWidth: 20,
+          textureLength: 10,
+          step: 0.3
+        })
+        // 3) 将飞线对象添加到图层中
+        view.addLayer(flyLineLayer)
+        // 4) 将飞线对象与数据源进行绑定
+        flyLineLayer.setData(data)
+      }
+    </script>
+  </body>
+</html>
