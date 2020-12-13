@@ -1,6 +1,6 @@
 <template>
 <!--  <div class="bmap">-->
-    <v-chart :options="options"/>
+    <vue-charts :options="options"/>
 <!--  </div>-->
 </template>
 

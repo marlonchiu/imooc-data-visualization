@@ -5,7 +5,7 @@
       value="2,115,465"
     >
       <template>
-        <v-chart :options="getOptions()"/>
+        <vue-charts :options="getOptions()"/>
       </template>
       <template v-slot:footer>
         <span>昨日订单量 </span>

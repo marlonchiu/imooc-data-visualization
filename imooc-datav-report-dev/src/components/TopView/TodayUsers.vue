@@ -5,7 +5,7 @@
       value="970,537"
     >
       <template>
-        <v-chart :options="getOptions()"/>
+        <vue-charts :options="getOptions()"/>
       </template>
       <template v-slot:footer>
         <span>退货率 </span>

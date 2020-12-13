@@ -5,7 +5,7 @@
       value="1,957,707"
     >
       <template>
-        <v-chart :options="getOptions()"/>
+        <vue-charts :options="getOptions()"/>
       </template>
       <template v-slot:footer>
         <div class="total-users-footer">
