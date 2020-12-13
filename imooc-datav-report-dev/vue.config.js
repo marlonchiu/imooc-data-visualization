@@ -1,4 +1,12 @@
 module.exports = {
+  chainWebpack: config => {
+    config
+      .plugin('html')
+      .tap(args => {
+        args[0].title = '慕课网数据可视化 - 数据报表'
+        return args
+      })
+  },
   // 服务项配置
   devServer: {
     host: 'localhost',

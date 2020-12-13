@@ -10,22 +10,26 @@
             <div class="chart-inner">
               <div class="chart">
                 <div class="chart-title">搜索用户数</div>
-                <div class="chart-data">111,103</div>
+                <div class="chart-data">
+                  <div class="main-data">{{ userCount | format }}</div>
+                </div>
                 <vue-charts :options="searchUserOption"/>
               </div>
               <div class="chart">
                 <div class="chart-title">搜索量</div>
-                <div class="chart-data">206,674</div>
-                <vue-charts :options="searchUserOption"/>
+                <div class="chart-data">
+                  <div class="main-data">{{ searchCount | format }}</div>
+                </div>
+                <vue-charts :options="searchNumberOption"/>
               </div>
             </div>
             <div class="table-wrapper">
               <el-table :data="tableData">
-                <el-table-column prop="rank" label="排名" />
-                <el-table-column prop="keyword" label="关键词" />
-                <el-table-column prop="count" label="总搜索量" />
-                <el-table-column prop="users" label="搜索用户数" />
-                <el-table-column prop="range" label="搜索占比" />
+                <el-table-column prop="rank" label="排名" width="180" />
+                <el-table-column prop="keyword" label="关键词" width="180" />
+                <el-table-column prop="count" label="总搜索量" width="160" />
+                <el-table-column prop="users" label="搜索用户数" width="160" />
+                <el-table-column prop="range" label="点击率" width="160" />
               </el-table>
               <el-pagination
                 layout="prev, pager, next"
@@ -64,52 +68,48 @@
 </template>
 
 <script>
+import commonDataMixin from '../../mixins/commonDataMixin'
+
 export default {
   name: 'BottomView',
+  mixins: [commonDataMixin],
   data () {
     return {
-      searchUserOption: {
-        xAxis: {
-          type: 'category',
-          boundaryGap: false
-        },
-        yAxis: {
-          show: false
-        },
-        series: [{
-          type: 'line',
-          data: [620, 432, 220, 534, 790, 430, 220, 320, 532, 320, 834, 690, 530, 220, 620],
-          areaStyle: {
-            color: 'rgba(95,187,255,.5)'
-          },
-          lineStyle: {
-            color: 'rgb(95,187,255)'
-          },
-          itemStyle: {
-            opacity: 0
-          },
-          smooth: true
-        }],
-        grid: {
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0
-        }
-      },
+      searchUserOption: {},
       searchNumberOption: {},
-      tableData: [
-        { rank: 1, keyword: '北京', count: 6570, users: 4536 },
-        { rank: 2, keyword: '上海', count: 1330, users: 172 },
-        { rank: 3, keyword: '广州', count: 3508, users: 2304 },
-        { rank: 4, keyword: '深圳', count: 1512, users: 780 }
-      ],
+      tableData: [],
       totalData: [],
       currentPage: 1,
       total: 100,
       pageSize: 4,
+      userCount: 0,
+      searchCount: 0,
       radioSelect: '品类',
       categoryOptions: {}
+    }
+  },
+  watch: {
+    wordCloudData(newVal) {
+      const totalData = []
+      this.wordCloudData.forEach((item, index) => {
+        totalData.push({
+          id: index + 1,
+          rank: index + 1,
+          keyword: item.word,
+          count: item.count,
+          users: item.user,
+          range: `${((item.user / item.count) * 100).toFixed(2)}%`
+        })
+        this.totalData = totalData
+        this.total = this.totalData.length
+        this.renderTable(1)
+        this.userCount = totalData.reduce((s, i) => i.users + s, 0)
+        this.searchCount = totalData.reduce((s, i) => i.count + s, 0)
+        this.renderLineChart()
+      })
+    },
+    category1() {
+      this.renderPieChart()
     }
   },
   mounted () {
@@ -118,24 +118,91 @@ export default {
   methods: {
     onPageChange(page) {
       this.currentPage = page
+      this.renderTable(page)
     },
-    onCategoryChange() {
-    //
+    onCategoryChange(type) {
+      this.radioSelect = type
+      this.renderPieChart()
+    },
+    renderLineChart() {
+      const createOption = (key) => {
+        const data = []
+        const axis = []
+        this.wordCloudData.forEach(item => data.push(item[key]))
+        this.wordCloudData.forEach(item => axis.push(item.word))
+
+        return {
+          xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: axis
+          },
+          yAxis: {
+            show: false
+          },
+          tooltip: {},
+          series: [{
+            type: 'line',
+            data: data,
+            areaStyle: {
+              color: 'rgba(95,187,255,.5)'
+            },
+            lineStyle: {
+              color: 'rgb(95,187,255)'
+            },
+            itemStyle: {
+              opacity: 0
+            },
+            smooth: true
+          }],
+          grid: {
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0
+          }
+        }
+      }
+
+      this.searchUserOption = createOption('user')
+      this.searchNumberOption = createOption('count')
     },
     renderPieChart() {
       const colors = ['#8d7fec', '#5085f2', '#f8726b', '#e7e702', '#78f283', '#4bc1fc']
-      const mockData = [
-        { legendname: '粉面粥店', value: 61, percent: '15.40', itemStyle: { color: colors[0] }, name: '粉面粥店 | 15.40%' },
-        { legendname: '简餐便当', value: 58, percent: '15.40', itemStyle: { color: colors[1] }, name: '简餐便当 | 15.40%' },
-        { legendname: '汉堡披萨', value: 29, percent: '17.40', itemStyle: { color: colors[2] }, name: '汉堡披萨 | 15.40%' },
-        { legendname: '香锅冒菜', value: 47, percent: '15.40', itemStyle: { color: colors[3] }, name: '香锅冒菜 | 15.40%' },
-        { legendname: '小吃炸串', value: 45, percent: '26.40', itemStyle: { color: colors[4] }, name: '小吃炸串 | 15.40%' },
-        { legendname: '地方菜系', value: 8, percent: '15.40', itemStyle: { color: colors[5] }, name: '地方菜系 | 15.40%' }
-      ]
-      console.log(mockData)
+
+      if (!this.category1.data1 || !this.category2.data1) {
+        return
+      }
+      let data
+      let axis
+      let total = 0
+      if (this.radioSelect === '品类') {
+        data = this.category1.data1.slice(0, 6)
+        axis = this.category1.axisX.slice(0, 6)
+        total = data.reduce((s, i) => s + i, 0)
+      } else {
+        data = this.category2.data1.slice(0, 6)
+        axis = this.category2.axisX.slice(0, 6)
+        total = data.reduce((s, i) => s + i, 0)
+      }
+
+      const chartData = []
+      data.forEach((item, index) => {
+        const percent = `${(item / total * 100).toFixed(2)}%`
+        chartData.push({
+          legendname: axis[index],
+          value: item,
+          percent,
+          itemStyle: {
+            color: colors[index]
+          },
+          name: `${axis[index]} | ${percent}`
+        })
+      })
+
       this.categoryOptions = {
         title: [{
-          text: '品类分布',
+          text: `${this.radioSelect}分布`,
           textStyle: {
             fontSize: 14,
             color: '#666'
@@ -144,7 +211,7 @@ export default {
           left: 20
         }, {
           text: '累计订单量',
-          subtext: '320',
+          subtext: total,
           textStyle: {
             fontSize: 14,
             color: '#999'
@@ -160,7 +227,7 @@ export default {
         series: [{
           name: '品类分布',
           type: 'pie',
-          data: mockData,
+          data: chartData,
           label: {
             normal: {
               show: true,
@@ -202,11 +269,17 @@ export default {
             const str = params.seriesName + '<br />' +
               params.marker + params.data.legendname + '<br />' +
               '数量：' + params.data.value + '<br />' +
-              '占比：' + params.data.percent + '%'
+              '占比：' + params.data.percent
             return str
           }
         }
       }
+    },
+    renderTable(page) {
+      this.tableData = this.totalData.slice(
+        (page - 1) * this.pageSize,
+        page * this.pageSize
+      )
     }
   }
 }
@@ -266,11 +339,18 @@ export default {
             color: #999;
             font-size: 14px;
           }
+
           .chart-data {
-            font-size: 22px;
-            color: #333;
-            font-weight: 500;
-            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+
+            .main-data {
+              font-size: 22px;
+              color: #333;
+              font-weight: 500;
+              letter-spacing: 2px;
+            }
           }
           .echarts {
             height: 50px;

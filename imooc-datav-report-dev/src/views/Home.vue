@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { screenDataRequest } from '../api'
+import { screenDataRequest, mapScatterRequest, wordcloudRequest } from '../api'
 import TopView from '../components/TopView'
 import SalesView from '../components/SalesView'
 import BottomView from '../components/BottomView'
@@ -22,9 +22,41 @@ export default {
     BottomView,
     MapView
   },
+  data () {
+    return {
+      screenData: null,
+      mapScatterData: null,
+      wordCloudData: null
+    }
+  },
+  provide() {
+    return {
+      getScreenData: this.getScreenData,
+      getWordCloudData: this.getWordCloudData,
+      getMapScatterData: this.getMapScatterData
+    }
+  },
   async mounted() {
     const screenData = await screenDataRequest()
-    console.log(screenData)
+    const mapScatterData = await mapScatterRequest()
+    const wordCloudData = await wordcloudRequest()
+    // console.log(screenData)
+    // console.log(mapScatterData)
+    // console.log(wordcloudData)
+    this.screenData = screenData
+    this.mapScatterData = mapScatterData
+    this.wordCloudData = wordCloudData
+  },
+  methods: {
+    getScreenData() {
+      return this.screenData
+    },
+    getWordCloudData() {
+      return this.wordCloudData
+    },
+    getMapScatterData() {
+      return this.mapScatterData
+    }
   }
 }
 </script>

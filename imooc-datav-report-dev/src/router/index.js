@@ -25,7 +25,7 @@ const routes = [
   },
   {
     path: '/bmap3',
-    name: 'BMap2',
+    name: 'BMap3',
     component: BMap3
   }
 ]

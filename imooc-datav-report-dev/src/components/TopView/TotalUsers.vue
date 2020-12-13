@@ -2,7 +2,7 @@
   <div class="total-users">
     <common-card
       title="累计用户数"
-      value="1,957,707"
+      :value="userToday"
     >
       <template>
         <vue-charts :options="getOptions()"/>
@@ -10,10 +10,10 @@
       <template v-slot:footer>
         <div class="total-users-footer">
           <span>日同比</span>
-          <span class="emphasis">95.74%</span>
+          <span class="emphasis">{{ userGrowthLastDay }}</span>
           <div class="increase" />
           <span class="month">月同比</span>
-          <span class="emphasis">144.68%</span>
+          <span class="emphasis">{{ userGrowthLastMonth }}</span>
           <div class="decrease" />
         </div>
       </template>
@@ -23,12 +23,14 @@
 
 <script>
 import commonCardMixin from '../../mixins/commonCardMixin'
+import commonDataMixin from '../../mixins/commonDataMixin'
+
 export default {
   name: 'TotalUsers',
-  mixins: [commonCardMixin],
+  mixins: [commonCardMixin, commonDataMixin],
   methods: {
     getOptions () {
-      return {
+      return this.userTodayNumber > 0 ? {
         xAxis: {
           show: false,
           type: 'value'
@@ -46,18 +48,20 @@ export default {
         // color: ['#3398DB'],
         series: [
           {
+            name: '上月平台用户数',
             type: 'bar',
             stack: '总量',
-            data: [100],
+            data: [this.userLastMonth],
             barWidth: 10,
             itemStyle: {
               color: '#45c946'
             }
           },
           {
+            name: '今日平台用户数',
             type: 'bar',
             stack: '总量',
-            data: [250],
+            data: [this.userTodayNumber],
             itemStyle: {
               color: '#eeeeee'
             }
@@ -65,7 +69,7 @@ export default {
           {
             type: 'custom',
             stack: '总量',
-            data: [100],
+            data: [this.userLastMonth],
             renderItem: function (params, api) {
               // console.log(params, api)
               const value = api.value(0)
@@ -106,7 +110,7 @@ export default {
             }
           }
         ]
-      }
+      } : null
     }
   }
 }

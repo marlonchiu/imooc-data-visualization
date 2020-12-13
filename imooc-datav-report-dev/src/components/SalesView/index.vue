@@ -48,8 +48,11 @@
 </template>
 
 <script>
+import commonDataMixin from '../../mixins/commonDataMixin'
+
 export default {
   name: 'SalesView',
+  mixins: [commonDataMixin],
   data () {
     return {
       activeIndex: '1',
@@ -82,9 +85,32 @@ export default {
           }
         }]
       },
-      chartOption: {
+      chartOption: {}
+    }
+  },
+  computed: {
+    rankData () {
+      return this.activeIndex === '1' ? this.orderRank : this.userRank
+    }
+  },
+  watch: {
+    orderFullYear() {
+      this.render(this.orderFullYear, this.orderFullYearAxis, '年度销售额', '销售额')
+    }
+  },
+  methods: {
+    onMenuSelect (index) {
+      this.activeIndex = index
+      if (index === '1') {
+        this.render(this.orderFullYear, this.orderFullYearAxis, '年度销售额', '销售额')
+      } else {
+        this.render(this.userFullYear, this.userFullYearAxis, '年度用户访问量', '访问量')
+      }
+    },
+    render (data, axis, title, seriesName) {
+      this.chartOption = {
         title: {
-          text: '年度销售业绩数据',
+          text: title,
           textStyle: {
             fontSize: 12,
             color: '#666'
@@ -94,7 +120,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+          data: axis,
           axisTick: {
             alignWithLabel: true,
             lineStyle: {
@@ -125,10 +151,12 @@ export default {
             }
           }
         },
+        tooltip: {},
         series: [{
+          name: seriesName,
           type: 'bar',
           barWidth: '35%',
-          data: ['330', '420', '560', '450', '610', '890', '720', '610', '580', '750', '770', '600']
+          data: data
         }],
         color: ['#3398DB'],
         grid: {
@@ -137,35 +165,7 @@ export default {
           right: 60,
           bottom: 50
         }
-      },
-      orderRank: [
-        { no: 1, name: '肯德基', money: '323,234' },
-        { no: 2, name: '麦当劳', money: '299,132' },
-        { no: 3, name: '肯德基', money: '283,998' },
-        { no: 4, name: '海底捞', money: '266,223' },
-        { no: 5, name: '西贝筱面村', money: '223,445' },
-        { no: 6, name: '汉堡王', money: '219,663' },
-        { no: 7, name: '真功夫', money: '200,997' }
-      ],
-      userRank: [
-        { no: 1, name: '麦当劳', money: '211,335' },
-        { no: 2, name: '肯德基', money: '210,597' },
-        { no: 3, name: '必胜客', money: '200,998' },
-        { no: 4, name: '海底捞', money: '199,220' },
-        { no: 5, name: '西贝筱面村', money: '195,444' },
-        { no: 6, name: '汉堡王', money: '180,161' },
-        { no: 7, name: '真功夫', money: '172,995' }
-      ]
-    }
-  },
-  computed: {
-    rankData () {
-      return this.activeIndex === '1' ? this.orderRank : this.userRank
-    }
-  },
-  methods: {
-    onMenuSelect (index) {
-      this.activeIndex = index
+      }
     }
   }
 }
