@@ -2,13 +2,22 @@
   "name": "imooc-datav-libs-dev",
   "version": "1.0.0",
   "description": "imooc datav components library",
-  "main": "index.js",
+  "main": "dist/imooc.datav.umd.js",
   "scripts": {
     "dev": "rollup -wc rollup.config.dev.js",
     "build": "rollup -c rollup.config.dev.js",
-    "build:prod": "rollup -c rollup.config.prod.js"
+    "build:prod": "eslint ./src && rollup -c rollup.config.prod.js",
+    "lint": "eslint ./src"
   },
-  "keywords": [],
+  "files": [
+    "dist",
+    "src"
+  ],
+  "keywords": [
+    "vue",
+    "imooc",
+    "datav"
+  ],
   "author": "marlonchiu",
   "license": "ISC",
   "devDependencies": {
@@ -16,6 +25,8 @@
     "@babel/preset-env": "^7.12.11",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@vue/compiler-sfc": "^3.0.4",
+    "eslint": "^7.15.0",
+    "eslint-plugin-vue": "^7.3.0",
     "postcss": "^8.2.1",
     "rollup": "^2.35.1",
     "rollup-plugin-babel": "^4.4.0",
