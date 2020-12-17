@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>imooc datav components library</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.0.4/dist/vue.global.js"></script>
+    <script src="../dist/imooc.datav.umd.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      {{ message }}
+      <test-component></test-component>
+    </div>
+    <script>
+      Vue.createApp({
+        setup() {
+          var message = 'hello datav!'
+          return {
+            message
+          }
+        }
+      }).use(window.imoocDatav).mount('#app')
+    </script>
+  </body>
+</html>
