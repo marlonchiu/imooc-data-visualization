@@ -6,6 +6,8 @@
       <router-link to="/test">Test</router-link>
     </div>
     <test-component></test-component>
+<!--    <test2-component></test2-component>-->
+<!--    <test3-component></test3-component>-->
     <router-view/>
   </div>
 </template>
