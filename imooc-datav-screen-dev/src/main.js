@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import datavTestComponent from 'imooc-datav-libs-dev/src/components/Test/index'
+import datavComponent from 'imooc-datav-libs-dev'
 
 // yarn build 打包
 // app.js 10.07 KiB (3个组件全部引入)
@@ -12,5 +12,5 @@ import datavTestComponent from 'imooc-datav-libs-dev/src/components/Test/index'
 createApp(App)
   .use(router)
   .use(store)
-  .use(datavTestComponent)
+  .use(datavComponent)
   .mount('#app')

@@ -5,7 +5,10 @@
       <router-link to="/about">About</router-link> |
       <router-link to="/test">Test</router-link>
     </div>
-    <test-component></test-component>
+    <div class="icon-wrapper">
+      <svg-component></svg-component>
+    </div>
+<!--    <test-component></test-component>-->
 <!--    <test2-component></test2-component>-->
 <!--    <test3-component></test3-component>-->
     <router-view/>
@@ -32,5 +35,8 @@
       color: #42b983;
     }
   }
+}
+.icon-wrapper {
+  color: #0f0;
 }
 </style>
