@@ -15,6 +15,7 @@
     <svg width="50" height="50" style="color: blueviolet">
       <use href="#arrowRight"></use>
     </svg>
+    <icon name="filledArrowRight" class="common-icon" :style="{width: 100, height: 100, color:'deeppink'}"></icon>
 <!--    <test-component></test-component>-->
 <!--    <test2-component></test2-component>-->
 <!--    <test3-component></test3-component>-->
@@ -47,5 +48,12 @@
   color: #f00;
   width: 20px;
   height: 20px;
+}
+.common-icon {
+  color: purple !important;
+  //width: 75px;
+  //height: 75px;
+  width: 3rem !important;
+  height: 3rem !important;
 }
 </style>
