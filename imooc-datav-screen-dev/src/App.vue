@@ -16,6 +16,7 @@
       <use href="#arrowRight"></use>
     </svg>
     <icon name="filledArrowRight" class="common-icon" :style="{width: 100, height: 100, color:'deeppink'}"></icon>
+    <icon name="yb-bids" :style="{width: 60, height: 60, color:'#d4237a'}"></icon>
 <!--    <test-component></test-component>-->
 <!--    <test2-component></test2-component>-->
 <!--    <test3-component></test3-component>-->
