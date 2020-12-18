@@ -20,6 +20,24 @@
     >
       <rect x="100" y="100" width="100" height="50" stroke-width="10" style="stroke: #000000; fill: none" />
     </svg>
+    <svg
+      width="500"
+      height="200"
+      viewBox="0 0 200 200"
+      style="border: 1px solid #000000"
+      preserveAspectRatio="xMidYMax slice"
+    >
+      <rect x="100" y="100" width="100" height="50" stroke-width="10" style="stroke: #000000; fill: none" />
+    </svg>
+    <svg
+      width="500"
+      height="200"
+      viewBox="0 0 200 200"
+      style="border: 1px solid #000000"
+      preserveAspectRatio="none"
+    >
+      <rect x="100" y="100" width="100" height="50" stroke-width="10" style="stroke: #000000; fill: none" />
+    </svg>
   </div>
 </template>
 
@@ -32,6 +50,22 @@ export default {
  * preserveAspectRatio
  * 是一个较难理解的概念，它相当于在 viewport 内部绘制了一个虚拟内框，
  * 它的默认值为：xMidYMid meet
+ *
+ * preserveAspectRatio 第二个参数如下：
+ *   xMid xMin xMax
+ *   YMid YMin YMax
+ *   上边一个下边一个组合
+ *
+ * preserveAspectRatio 第二个参数如下：
+ *    meet: 保持宽高比并将viewBox缩放为适合viewport的大小
+ *    meet 模式下，svg 将优先采纳压缩比较小的作为最终压缩比，
+ *    meet 是默认参数
+ *
+ * slice: 保持宽高比并将所有不在viewport中的viewBox剪裁掉
+ *    slice 模式下，svg 将优先采纳压缩比较大的作为最终压缩比
+ *
+ * none: 不保存宽高比。缩放图像适合整个viewbox，可能会发生图像变形
+ *    none 模式下，svg 将分别计算 x 和 y 轴的压缩比
  */
 </script>
 
