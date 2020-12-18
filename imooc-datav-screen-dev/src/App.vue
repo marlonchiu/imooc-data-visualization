@@ -37,6 +37,8 @@
   }
 }
 .icon-wrapper {
-  color: #0f0;
+  color: #f00;
+  width: 20px;
+  height: 20px;
 }
 </style>
