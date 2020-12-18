@@ -5,9 +5,16 @@
       <router-link to="/about">About</router-link> |
       <router-link to="/test">Test</router-link>
     </div>
-    <div class="icon-wrapper">
-      <svg-component></svg-component>
-    </div>
+    <svg-component></svg-component>
+    <svg width="50" height="50" :style="{color:'red'}">
+      <use href="#more"></use>
+    </svg>
+    <svg width="50" height="50" style="color: green">
+      <use href="#filledArrowRight"></use>
+    </svg>
+    <svg width="50" height="50" style="color: blueviolet">
+      <use href="#arrowRight"></use>
+    </svg>
 <!--    <test-component></test-component>-->
 <!--    <test2-component></test2-component>-->
 <!--    <test3-component></test3-component>-->
