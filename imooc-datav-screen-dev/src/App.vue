@@ -15,8 +15,10 @@
     <svg width="50" height="50" style="color: blueviolet">
       <use href="#arrowRight"></use>
     </svg>
-    <icon name="filledArrowRight" class="common-icon" :style="{width: 100, height: 100, color:'deeppink'}"></icon>
-    <icon name="yb-bids" :style="{width: 60, height: 60, color:'#d4237a'}"></icon>
+<!--    <icon prefix="icon" name="filledArrowRight" class="common-icon" :style="{width: 100, height: 100, color:'deeppink'}"></icon>-->
+    <icon prefix="icon" name="arrowRight" :style="{width: 100, height: 100, color:'deeppink'}"></icon>
+    <Icon prefix="icon" name="bids" class="common-icon"></Icon>
+    <Icon name="hetongguanli" :style="{width: '60px', height: '60px', color:'#d4237a'}"></Icon>
 <!--    <test-component></test-component>-->
 <!--    <test2-component></test2-component>-->
 <!--    <test3-component></test3-component>-->
@@ -51,10 +53,10 @@
   height: 20px;
 }
 .common-icon {
-  color: purple !important;
+  color: purple;
   //width: 75px;
   //height: 75px;
-  width: 3rem !important;
-  height: 3rem !important;
+  width: 3rem;
+  height: 3rem;
 }
 </style>
