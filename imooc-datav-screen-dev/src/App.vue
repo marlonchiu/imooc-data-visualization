@@ -29,8 +29,8 @@
     <imooc-loading width="100" height="100">
       <p style="font-size: 20px; color: red">数据大屏加载中...</p>
     </imooc-loading>
-    <div style="width: 50%; background: #999; color: white;">
-      <imooc-fly-box>
+    <div style="width: 50%; background: #000; color: white;">
+      <imooc-fly-box starLength="200" :duration="5">
         <div>111</div>
         <div>333</div>
         <div>222</div>

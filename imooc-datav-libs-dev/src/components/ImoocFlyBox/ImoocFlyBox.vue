@@ -19,9 +19,9 @@
           <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
         </radialGradient>
         <mask id="fly-box-mask">
-          <circle r="150" cx="0" cy="0" fill="url(#radial-gradient)">
+          <circle :r="starLength" cx="0" cy="0" fill="url(#radial-gradient)">
             <animateMotion
-              dur="3s"
+              :dur="`${duration}s`"
               :path="path"
               rotate="auto"
               repeatCount="indefinite"
@@ -31,12 +31,12 @@
       </defs>
       <use
         href="#fly-box-path"
-        stroke="#235FA7"
+        :stroke="lineColor"
         stroke-width="1"
       />
       <use
         href="#fly-box-path"
-        stroke="#4fd2dd"
+        :stroke="starColor"
         stroke-width="3"
         mask="url(#fly-box-mask)"
       />
@@ -52,7 +52,23 @@ import { ref, onMounted, computed, getCurrentInstance } from 'vue'
 export default {
   name: 'ImoocFlyBox',
   props: {
-
+    lineColor: {
+      type: String,
+      default: '#235FA7'
+    },
+    starColor: {
+      type: String,
+      default: '#4fd2dd'
+    },
+    // 流星线长度
+    starLength: {
+      type: [Number, String],
+      default: 50
+    },
+    duration: {
+      type: [Number, String],
+      default: 3
+    }
   },
   setup(props) {
     const width = ref(0)
