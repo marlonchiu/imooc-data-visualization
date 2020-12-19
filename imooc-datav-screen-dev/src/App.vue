@@ -23,9 +23,9 @@
 <!--    <test2-component></test2-component>-->
 <!--    <test3-component></test3-component>-->
     <br>
-<!--    <div class="svg-animation-wrapper">-->
-<!--      <svg-animation></svg-animation>-->
-<!--    </div>-->
+    <div class="svg-animation-wrapper">
+      <svg-animation></svg-animation>
+    </div>
     <imooc-loading width="100" height="100">
       <p style="font-size: 20px; color: red">数据大屏加载中...</p>
     </imooc-loading>

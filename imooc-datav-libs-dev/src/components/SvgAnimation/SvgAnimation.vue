@@ -225,6 +225,19 @@
         </rect>
       </svg>
     </div>
+    <!-- 蒙版 mask -->
+    <div class="container">
+      <svg width="400" height="400">
+        <defs>
+          <mask id="test-mask">
+            <rect x="5" y="5" width="390" height="390" fill="purple"></rect>
+            <circle r="50" cx="150" cy="150"></circle>
+          </mask>
+        </defs>
+        <rect x="5" y="5" width="390" height="390" fill="red"></rect>
+        <rect x="5" y="5" width="390" height="390" fill="blue" mask="url(#test-mask)"></rect>
+      </svg>
+    </div>
   </div>
 </template>
 
