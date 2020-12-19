@@ -29,6 +29,7 @@
     <imooc-loading width="100" height="100">
       <p style="font-size: 20px; color: red">数据大屏加载中...</p>
     </imooc-loading>
+    <imooc-fly-box></imooc-fly-box>
 <!--    <router-view/>-->
   </div>
 </template>
