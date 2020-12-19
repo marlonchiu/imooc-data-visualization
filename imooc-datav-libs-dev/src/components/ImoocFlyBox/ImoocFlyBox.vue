@@ -3,12 +3,12 @@
     <svg :width="width" :height="height">
       <defs>
         <path
-          id="fly-box-path"
+          :id="pathId"
           :d="path"
           fill="none"
         ></path>
         <radialGradient
-          id="radial-gradient"
+          :id="radialGradientId"
           cx="50%"
           cy="50%"
           fx="100%"
@@ -18,8 +18,8 @@
           <stop offset="0%" stop-color="white" stop-opacity="1"></stop>
           <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
         </radialGradient>
-        <mask id="fly-box-mask">
-          <circle :r="starLength" cx="0" cy="0" fill="url(#radial-gradient)">
+        <mask :id="maskId">
+          <circle :r="starLength" cx="0" cy="0" :fill="`url(#${radialGradientId})`">
             <animateMotion
               :dur="`${duration}s`"
               :path="path"
@@ -30,15 +30,15 @@
         </mask>
       </defs>
       <use
-        href="#fly-box-path"
+        :href="`#${pathId}`"
         :stroke="lineColor"
         stroke-width="1"
       />
       <use
-        href="#fly-box-path"
+        :href="`#${pathId}`"
         :stroke="starColor"
         stroke-width="3"
-        mask="url(#fly-box-mask)"
+        :mask="`url(#${maskId})`"
       />
     </svg>
     <div class="imooc-fly-box-content">
@@ -49,6 +49,7 @@
 
 <script>
 import { ref, onMounted, computed, getCurrentInstance } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 export default {
   name: 'ImoocFlyBox',
   props: {
@@ -71,9 +72,13 @@ export default {
     }
   },
   setup(props) {
+    const uuid = uuidv4()
     const width = ref(0)
     const height = ref(0)
     const refName= 'imoocFlyBox'
+    const pathId = `${refName}-path-${uuid}`
+    const radialGradientId = `${refName}-radial-gradient-${uuid}`
+    const maskId = `${refName}-mask-${uuid}`
 
     const path = computed(() => {
       // M5 5 L395 5 L395 395 L5 395 Z
@@ -91,7 +96,10 @@ export default {
       width,
       height,
       path,
-      refName
+      refName,
+      pathId,
+      radialGradientId,
+      maskId
     }
   }
 }

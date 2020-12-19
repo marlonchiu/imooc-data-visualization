@@ -30,7 +30,7 @@
       <p style="font-size: 20px; color: red">数据大屏加载中...</p>
     </imooc-loading>
     <div style="width: 50%; background: #000; color: white;">
-      <imooc-fly-box starLength="200" :duration="5">
+      <imooc-fly-box>
         <div>111</div>
         <div>333</div>
         <div>222</div>
@@ -46,6 +46,13 @@
         <div>222</div>
         <div>222</div>
         <div>222</div>
+        <div>222</div>
+      </imooc-fly-box>
+    </div>
+    <div style="background: #000; color: white;">
+      <imooc-fly-box duration="5">
+        <div>111</div>
+        <div>333</div>
         <div>222</div>
       </imooc-fly-box>
     </div>
