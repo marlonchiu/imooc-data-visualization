@@ -226,16 +226,37 @@
       </svg>
     </div>
     <!-- 蒙版 mask -->
-    <div class="container">
+    <div class="container bg-grey">
       <svg width="400" height="400">
         <defs>
           <mask id="test-mask">
             <rect x="5" y="5" width="390" height="390" fill="purple"></rect>
             <circle r="50" cx="150" cy="150"></circle>
           </mask>
+          <!-- <linearGradient id="test-linear-gradient">
+            <stop offset="0%" stop-color="red" stop-opacity="1"></stop>
+            <stop offset="50%" stop-color="green"></stop>
+            <stop offset="100%" stop-color="blue" stop-opacity="0.5"></stop>
+          </linearGradient> -->
+          <radialGradient
+            id="test-radial-gradient"
+            cx="50%"
+            cy="50%"
+            fx="50%"
+            fy="50%"
+            r="50%"
+          >
+            <stop offset="0%" stop-color="white" stop-opacity="1"></stop>
+<!--            <stop offset="10%" stop-color="yellow"></stop>-->
+<!--            <stop offset="90%" stop-color="red" stop-opacity="0.2"></stop>-->
+            <stop offset="100%" stop-color="white" stop-opacity="0"></stop>
+          </radialGradient>
         </defs>
-        <rect x="5" y="5" width="390" height="390" fill="red"></rect>
-        <rect x="5" y="5" width="390" height="390" fill="blue" mask="url(#test-mask)"></rect>
+        <circle cx="200" cy="200" r="150" fill="url(#test-radial-gradient)"></circle>
+        <!-- <rect x="5" y="5" width="390" height="390" fill="url(#test-radial-gradient)"></rect> -->
+        <!-- <rect x="5" y="5" width="390" height="390" fill="url(#test-linear-gradient)"></rect> -->
+        <!-- <rect x="5" y="5" width="390" height="390" fill="red"></rect> -->
+        <!-- <rect x="5" y="5" width="390" height="390" fill="blue" mask="url(#test-mask)"></rect> -->
       </svg>
     </div>
   </div>
@@ -332,5 +353,8 @@ export default {
   stroke-dasharray: 400;
   stroke-dashoffset: 400;
   transition: stroke-dashoffset 0.5s linear;
+}
+.bg-grey {
+  background: #333;
 }
 </style>
