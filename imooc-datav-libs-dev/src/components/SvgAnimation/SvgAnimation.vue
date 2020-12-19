@@ -102,8 +102,17 @@
 </template>
 
 <script>
+import { onMounted } from 'vue'
 export default {
-  name: 'SvgAnimation'
+  name: 'SvgAnimation',
+  setup() {
+    onMounted(() => {
+      console.log('onMounted: ')
+      const path = document.getElementsByClassName('logo')[0]
+      const pathLen = path.getTotalLength() // 6885
+      console.log('pathLen: ', pathLen)
+    })
+  }
 }
 </script>
 
@@ -146,6 +155,30 @@ export default {
   fill: none;
   stroke: #333;
   stroke-width: 5;
+  animation: logo 6s linear 1 forwards;
+}
+
+@keyframes logo {
+  0% {
+    fill: white;
+    stroke: #333;
+    stroke-dasharray: 6885;
+    stroke-dashoffset: 6885;
+  }
+  50% {
+    fill: white;
+    stroke: #333;
+    stroke-dasharray: 6885;
+    stroke-dashoffset: 0;
+  }
+  75% {
+    fill: red;
+    stroke: white;
+  }
+  100% {
+    fill: blue;
+    stroke: white;
+  }
 }
 
 .line-container {
