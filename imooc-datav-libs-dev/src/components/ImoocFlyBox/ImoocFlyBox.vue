@@ -1,10 +1,10 @@
 <template>
-  <div class="imooc-fly-box" style="background: #333;">
-    <svg width="400" height="400" viewBox="0 0 400 400">
+  <div class="imooc-fly-box" :ref="refName">
+    <svg :width="width" :height="height">
       <defs>
         <path
           id="fly-box-path"
-          d="M5 5 L395 5 L395 395 L5 395 Z"
+          :d="path"
           fill="none"
         ></path>
         <radialGradient
@@ -22,7 +22,7 @@
           <circle r="150" cx="0" cy="0" fill="url(#radial-gradient)">
             <animateMotion
               dur="3s"
-              path="M5 5 L395 5 L395 395 L5 395 Z"
+              :path="path"
               rotate="auto"
               repeatCount="indefinite"
             />
@@ -41,14 +41,63 @@
         mask="url(#fly-box-mask)"
       />
     </svg>
+    <div class="imooc-fly-box-content">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
 <script>
+import { ref, onMounted, computed, getCurrentInstance } from 'vue'
 export default {
-  name: 'ImoocFlyBox'
+  name: 'ImoocFlyBox',
+  props: {
+
+  },
+  setup(props) {
+    const width = ref(0)
+    const height = ref(0)
+    const refName= 'imoocFlyBox'
+
+    const path = computed(() => {
+      // M5 5 L395 5 L395 395 L5 395 Z
+      return `M5 5 L${width.value - 5} 5 L${width.value - 5} ${height.value - 5} L5 ${height.value - 5} Z`
+    })
+
+    onMounted(() => {
+      const instance = getCurrentInstance()
+      const dom = instance.ctx.$refs[refName]
+      width.value = dom.clientWidth
+      height.value = dom.clientHeight
+    })
+
+    return {
+      width,
+      height,
+      path,
+      refName
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+.imooc-fly-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .imooc-fly-box-content {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+}
 </style>

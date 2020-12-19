@@ -23,13 +23,32 @@
 <!--    <test2-component></test2-component>-->
 <!--    <test3-component></test3-component>-->
     <br>
-    <div class="svg-animation-wrapper">
-      <svg-animation></svg-animation>
-    </div>
+<!--    <div class="svg-animation-wrapper">-->
+<!--      <svg-animation></svg-animation>-->
+<!--    </div>-->
     <imooc-loading width="100" height="100">
       <p style="font-size: 20px; color: red">数据大屏加载中...</p>
     </imooc-loading>
-    <imooc-fly-box></imooc-fly-box>
+    <div style="width: 50%; background: #999; color: white;">
+      <imooc-fly-box>
+        <div>111</div>
+        <div>333</div>
+        <div>222</div>
+        <div>222</div>
+        <div>222</div>
+        <div>222</div>
+        <div>222</div>
+        <div>111</div>
+        <div>333</div>
+        <div>222</div>
+        <div>222</div>
+        <div>222</div>
+        <div>222</div>
+        <div>222</div>
+        <div>222</div>
+        <div>222</div>
+      </imooc-fly-box>
+    </div>
 <!--    <router-view/>-->
   </div>
 </template>
