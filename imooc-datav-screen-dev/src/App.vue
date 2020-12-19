@@ -26,7 +26,9 @@
 <!--    <div class="svg-animation-wrapper">-->
 <!--      <svg-animation></svg-animation>-->
 <!--    </div>-->
-    <imooc-loading></imooc-loading>
+    <imooc-loading width="100" height="100">
+      <p style="font-size: 20px; color: red">数据大屏加载中...</p>
+    </imooc-loading>
 <!--    <router-view/>-->
   </div>
 </template>
