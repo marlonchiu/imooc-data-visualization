@@ -22,7 +22,11 @@
 <!--    <test-component></test-component>-->
 <!--    <test2-component></test2-component>-->
 <!--    <test3-component></test3-component>-->
-    <router-view/>
+    <br>
+    <div class="svg-animation-wrapper">
+      <svg-animation></svg-animation>
+    </div>
+<!--    <router-view/>-->
   </div>
 </template>
 
