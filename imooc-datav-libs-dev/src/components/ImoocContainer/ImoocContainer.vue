@@ -1,6 +1,8 @@
 <template>
   <div id="imooc-container" :ref="refName">
-    <slot></slot>
+    <template v-if="isReady">
+      <slot></slot>
+    </template>
   </div>
 </template>
 
@@ -21,7 +23,8 @@ export default {
     // 视口宽高
     const originalWidth = ref(0)
     const originalHeight = ref(0)
-    let context, dom
+    const isReady = ref(false)
+    let context, dom, observer
 
     const initSize = () => {
       return new Promise((resolve) => {
@@ -35,7 +38,7 @@ export default {
             width.value = dom.clientWidth
             height.value = dom.clientHeight
           }
-          //
+
           // 获取画布的尺寸 (避免反复计算)
           if (!originalWidth.value || !originalHeight.value) {
             originalWidth.value = window.screen.width
@@ -75,13 +78,33 @@ export default {
       dom.style.transform = `scale(${widthScale}, ${heightScale})`
     }
 
-    const onResize = async () => {
-      console.log('onResize')
+    const onResize = async (e) => {
+      console.log('onResize', e)
       await initSize()
       updateScale()
     }
 
+    const initMutationObserver = () => {
+      // https://developer.mozilla.org/zh-CN/docs/Web/API/MutationObserver
+      const MutationObserver = window.MutationObserver
+      // 创建一个观察器实例并传入回调函数
+      observer = new MutationObserver(onResize)
+      // 配置开始观察目标节点 dom
+      // 观察器的配置（需要观察什么变动）
+      const options = { attributes: true, attributeFilter: ['style'], attributeOldValue: true }
+      observer.observe(dom, options)
+    }
+
+    const removeMutationObserver = () => {
+      if (observer) {
+        observer.disconnect()
+        observer.takeRecords()
+        observer = null
+      }
+    }
+
     onMounted(async () => {
+      isReady.value = false
       const instance = getCurrentInstance()
       context = instance.ctx
       await initSize()
@@ -91,16 +114,18 @@ export default {
       window.addEventListener('resize', debounce(100, onResize))
       // 查看 vue3 中所有的方法
       // console.log(require('vue'))
+      initMutationObserver()
+      isReady.value = true
     })
 
     onUnmounted(() => {
       window.removeEventListener('resize', onResize)
+      removeMutationObserver()
     })
 
     return {
       refName,
-      width,
-      height
+      isReady
     }
   }
 }
