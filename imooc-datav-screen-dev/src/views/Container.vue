@@ -15,7 +15,7 @@ export default {
 
 <style lang="scss" scoped>
 .test {
-  font-size: 14px;
+  font-size: 48px;
   color: red;
 }
 </style>

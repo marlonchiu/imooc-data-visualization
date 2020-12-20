@@ -5,7 +5,8 @@
 </template>
 
 <script>
-import { ref, onMounted, computed, getCurrentInstance } from 'vue'
+import { ref, onMounted, onUnmounted, getCurrentInstance, nextTick } from 'vue'
+import { debounce } from '../../utils/help'
 
 export default {
   name: 'ImoocContainer',
@@ -22,26 +23,32 @@ export default {
     const originalHeight = ref(0)
     let context, dom
 
-    const init = () => {
-      dom = context.$refs[refName]
-      // 获取大屏的真实尺寸 (不传值就是 dom元素的宽高)
-      if (props.options && props.options.width && props.options.height) {
-        width.value = props.options.width
-        height.value = props.options.height
-      } else {
-        width.value = dom.clientWidth
-        height.value = dom.clientHeight
-      }
-      //
-      // 获取画布的尺寸 (避免反复计算)
-      if (!originalWidth.value || !originalHeight.value) {
-        originalWidth.value = window.screen.width
-        originalHeight.value = window.screen.height
-      }
+    const initSize = () => {
+      return new Promise((resolve) => {
+        nextTick(() => {
+          dom = context.$refs[refName]
+          // 获取大屏的真实尺寸 (不传值就是 dom元素的宽高)
+          if (props.options && props.options.width && props.options.height) {
+            width.value = props.options.width
+            height.value = props.options.height
+          } else {
+            width.value = dom.clientWidth
+            height.value = dom.clientHeight
+          }
+          //
+          // 获取画布的尺寸 (避免反复计算)
+          if (!originalWidth.value || !originalHeight.value) {
+            originalWidth.value = window.screen.width
+            originalHeight.value = window.screen.height
+          }
 
-      console.log('大屏真实尺寸', width.value, height.value)
-      // console.log(window.screen)
-      console.log('画布的尺寸', originalWidth.value, originalHeight.value)
+          // console.log('大屏真实尺寸', width.value, height.value)
+          // console.log(window.screen)
+          // console.log('画布的尺寸', originalWidth.value, originalHeight.value)
+          resolve()
+        })
+
+      })
     }
 
     const updateSize = () => {
@@ -58,22 +65,36 @@ export default {
       // document.body 获取当前展示区域的宽高
       const currentWidth = document.body.clientWidth
       const currentHeight = document.body.clientHeight
-      console.log('展示区域的宽高 ', currentWidth, currentHeight)
+      // console.log('展示区域的宽高 ', currentWidth, currentHeight)
       // 获取大屏最终真实的宽高
       const realWidth = width.value || originalWidth.value
       const realHeight = height.value || originalHeight.value
-      console.log('获取大屏真实的宽高 ', realWidth, realHeight)
+      // console.log('获取大屏真实的宽高 ', realWidth, realHeight)
       const widthScale = currentWidth / realWidth
       const heightScale = currentHeight / realHeight
       dom.style.transform = `scale(${widthScale}, ${heightScale})`
     }
 
-    onMounted(() => {
+    const onResize = async () => {
+      console.log('onResize')
+      await initSize()
+      updateScale()
+    }
+
+    onMounted(async () => {
       const instance = getCurrentInstance()
       context = instance.ctx
-      init()
+      await initSize()
       updateSize()
       updateScale()
+      // 此处使用 debounce 会产生一个 页面元素先放大后缩小的效果，最终保持不变（延迟执行导致的）
+      window.addEventListener('resize', debounce(100, onResize))
+      // 查看 vue3 中所有的方法
+      // console.log(require('vue'))
+    })
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', onResize)
     })
 
     return {

@@ -36,7 +36,16 @@ module.exports = {
     // 将第三方模块进行混合打包
     vue(),
     babel({
-      exclude: 'node_modules/**'
+      exclude: 'node_modules/**',
+      runtimeHelpers: true,
+      plugins: [
+        [
+          "@babel/plugin-transform-runtime",
+          {
+            regenerator: true
+          }
+        ]
+      ]
     }),
     resolve(),
     commonjs(),
