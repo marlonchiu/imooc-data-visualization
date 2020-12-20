@@ -75,7 +75,7 @@ export default {
       // console.log('获取大屏真实的宽高 ', realWidth, realHeight)
       const widthScale = currentWidth / realWidth
       const heightScale = currentHeight / realHeight
-      dom.style.transform = `scale(${widthScale}, ${heightScale})`
+      dom && (dom.style.transform = `scale(${widthScale}, ${heightScale})`)
     }
 
     const onResize = async (e) => {
