@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-<!--    <div id="nav">-->
-<!--      <router-link to="/">Home</router-link> |-->
-<!--      <router-link to="/container">Container</router-link> |-->
-<!--      <router-link to="/test">Test</router-link>-->
-<!--    </div>-->
+    <!--<div id="nav">-->
+    <!--  <router-link to="/">Home</router-link> |-->
+    <!--  <router-link to="/container">Container</router-link> |-->
+    <!--  <router-link to="/test">Test</router-link>-->
+    <!--</div>-->
     <router-view/>
   </div>
 </template>
@@ -31,8 +31,8 @@
 //  }
 //}
 html, body, #app {
-  height: 100%;
   width: 100%;
+  height: 100%;
   padding: 0;
   margin: 0;
 }

@@ -1,6 +1,7 @@
 <template>
   <div class="container-page">
-    <imooc-container>
+     <imooc-container :options="{ width: 3840, height: 2160 }">
+    <!--<imooc-container>-->
       <div class="test">123456789</div>
     </imooc-container>
   </div>

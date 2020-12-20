@@ -20,11 +20,11 @@ export default {
     // 视口宽高
     const originalWidth = ref(0)
     const originalHeight = ref(0)
+    let context, dom
 
-    console.log('props: ', props)
-    onMounted(() => {
-      const instance = getCurrentInstance()
-      const dom = instance.ctx.$refs[refName]
+    const init = () => {
+      dom = context.$refs[refName]
+      // 获取大屏的真实尺寸 (不传值就是 dom元素的宽高)
       if (props.options && props.options.width && props.options.height) {
         width.value = props.options.width
         height.value = props.options.height
@@ -32,16 +32,49 @@ export default {
         width.value = dom.clientWidth
         height.value = dom.clientHeight
       }
-      // 避免反复计算
+      //
+      // 获取画布的尺寸 (避免反复计算)
       if (!originalWidth.value || !originalHeight.value) {
         originalWidth.value = window.screen.width
         originalHeight.value = window.screen.height
       }
-      console.log(width.value, height.value)
-      console.log(window.screen)
-      console.log(originalWidth.value, originalHeight.value)
-    })
 
+      console.log('大屏真实尺寸', width.value, height.value)
+      // console.log(window.screen)
+      console.log('画布的尺寸', originalWidth.value, originalHeight.value)
+    }
+
+    const updateSize = () => {
+      if (width.value && height.value) {
+        dom.style.width = `${width.value}px`
+        dom.style.height = `${height.value}px`
+      } else {
+        dom.style.width = `${originalWidth.value}px`
+        dom.style.height = `${originalHeight.value}px`
+      }
+    }
+
+    const updateScale = () => {
+      // document.body 获取当前展示区域的宽高
+      const currentWidth = document.body.clientWidth
+      const currentHeight = document.body.clientHeight
+      console.log('展示区域的宽高 ', currentWidth, currentHeight)
+      // 获取大屏最终真实的宽高
+      const realWidth = width.value || originalWidth.value
+      const realHeight = height.value || originalHeight.value
+      console.log('获取大屏真实的宽高 ', realWidth, realHeight)
+      const widthScale = currentWidth / realWidth
+      const heightScale = currentHeight / realHeight
+      dom.style.transform = `scale(${widthScale}, ${heightScale})`
+    }
+
+    onMounted(() => {
+      const instance = getCurrentInstance()
+      context = instance.ctx
+      init()
+      updateSize()
+      updateScale()
+    })
 
     return {
       refName,
@@ -53,4 +86,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#imooc-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transform-origin: left top;
+  z-index: 999;
+}
 </style>
