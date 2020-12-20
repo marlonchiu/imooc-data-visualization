@@ -7,10 +7,18 @@
       <div class="header">
         <top-header />
       </div>
-      <div class="separator">222</div>
+      <div class="separator-wrapper">
+        <div class="separator"></div>
+      </div>
       <div class="center">
         <div class="left">
-          <div class="left1">333</div>
+          <div class="left1">
+            <total-user
+              :today-user="todayUser"
+              :growth-last-day="growthLastDay"
+              :growth-last-month="growthLastMonth"
+            />
+          </div>
           <div class="left2">444</div>
           <div class="left3">555</div>
           <div class="left4">666</div>
@@ -40,23 +48,29 @@
 
 <script>
 import { ref, onMounted } from 'vue'
+import { useScreenData } from '@/hooks/useScreenData.js'
 import TopHeader from '@/components/TopHeader'
+import TotalUser from '@/components/TotalUser'
 
 export default {
   name: 'Home',
   components: {
-    TopHeader
+    TopHeader,
+    TotalUser
   },
   setup () {
     const loading = ref(true)
+    const screenData = useScreenData()
 
     onMounted(() => {
       setTimeout(() => {
         loading.value = false
       }, 200)
     })
+
     return {
-      loading
+      loading,
+      ...screenData
     }
   }
 }
@@ -73,6 +87,7 @@ export default {
   background: #1d1d1d;
   color: #fff;
   font-size: 48px;
+
   #imooc-container {
     width: 100%;
     height: 100%;
@@ -87,17 +102,23 @@ export default {
       height: 167px;
     }
 
-    .separator {
+    .separator-wrapper {
       width: 100%;
       height: 10px;
-      background: #000;
+
+      .separator {
+        width: 100%;
+        height: 10px;
+        background: #5c5859;
+        filter: blur(0);
+        backdrop-filter: blur(0);
+      }
     }
 
     .center {
       width: 100%;
       flex: 1;
       display: flex;
-      background: rebeccapurple;
 
       .left {
         flex: 0 0 860px;
@@ -106,13 +127,12 @@ export default {
         justify-content: space-between;
         width: 860px;
         height: 100%;
-        background: red;
         padding-bottom: 20px;
         box-sizing: border-box;
 
         .left1 {
           height: 300px;
-          background: green;
+          background: #7a7a7a;
         }
 
         .left2 {

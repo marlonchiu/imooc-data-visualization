@@ -2,7 +2,7 @@
   <div class="top-header">
 <!--    <img src="https://www.youbaobao.xyz/resource/imooc.png" class="logo" />-->
     <div class="log-wrapper">
-      <imooc-logo stroke="red" stroke-width="50"></imooc-logo>
+      <imooc-logo stroke="#d81e06" stroke-width="50"></imooc-logo>
     </div>
     <div class="logo-text">
       <div class="cn-text">慕课外卖业务数据大盘</div>
