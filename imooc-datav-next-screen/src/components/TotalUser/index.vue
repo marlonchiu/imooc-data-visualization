@@ -3,7 +3,8 @@
     <div class="title">慕课外卖用户总数</div>
     <div class="sub-title">User Total Count</div>
     <div class="total">
-      {{ todayUser }}
+<!--      {{ todayUser }}-->
+      <countTo :startVal="0" :endVal="30000" :duration="3000"></countTo>
     </div>
     <div class="percent-text">
       <span class="percent-text-1">
