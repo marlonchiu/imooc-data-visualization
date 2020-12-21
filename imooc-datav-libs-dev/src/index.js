@@ -8,6 +8,7 @@ import ImoocLoading from './components/ImoocLoading/index'
 import ImoocFlyBox from './components/ImoocFlyBox/index'
 import ImoocContainer from './components/ImoocContainer/index'
 import ImoocLogo from './components/ImoocLogo/index'
+import CountTo from './components/CountTo/index'
 
 export default function (Vue) {
   Vue.use(Test)
@@ -20,4 +21,5 @@ export default function (Vue) {
   Vue.use(ImoocFlyBox)
   Vue.use(ImoocContainer)
   Vue.use(ImoocLogo)
+  Vue.use(CountTo)
 }

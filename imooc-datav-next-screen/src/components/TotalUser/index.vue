@@ -3,27 +3,46 @@
     <div class="title">慕课外卖用户总数</div>
     <div class="sub-title">User Total Count</div>
     <div class="total">
-<!--      {{ todayUser }}-->
-      <countTo :startVal="0" :endVal="30000" :duration="3000"></countTo>
+      <countTo
+        :startVal="startVal"
+        :endVal="todayUser"
+        :duration="1000"
+        separator=","
+        autoplay
+      ></countTo>
     </div>
     <div class="percent-text">
       <span class="percent-text-1">
-        每日增长率: {{ growthLastDay }}%
+        每日增长率:
+        <countTo
+          :startVal="startPercent"
+          :endVal="growthLastDay"
+          :duration="1000"
+          :decimals="2"
+          suffix="%"
+        ></countTo>
       </span>
       <span class="percent-text-2">
-        每月增长率: {{ growthLastMonth }}%
+        每月增长率:
+        <countTo
+          :startVal="startPercent2"
+          :endVal="growthLastMonth"
+          :duration="1000"
+          :decimals="2"
+          suffix="%"
+        ></countTo>
       </span>
     </div>
     <div class="percent">
       <div class="percent-inner-wrapper">
-        <div class="percent-inner"></div>
+        <div class="percent-inner" :style="{width: `${growthLastDay}%`}" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 
 export default {
   name: 'TotalUser',
@@ -46,17 +65,31 @@ export default {
     const startPercent = ref(0)
     const startPercent2 = ref(0)
 
-    const updateStartVal = () => {
-      startVal.value = props.todayUser
-      startPercent.value = props.growthLastDay
-      startPercent2.value = props.growthLastMonth
-    }
+    // const updateStartVal = () => {
+    //   startVal.value = props.todayUser
+    //   startPercent.value = props.growthLastDay
+    //   startPercent2.value = props.growthLastMonth
+    // }
+    //
+    // watch(() => props.todayUser, () => {
+    //   updateStartVal()
+    // })
+    watch(() => props.todayUser, (nextValue, preValue) => {
+      startVal.value = preValue
+    })
+
+    watch(() => props.growthLastDay, (nextValue, preValue) => {
+      startPercent.value = preValue
+    })
+
+    watch(() => props.growthLastMonth, (nextValue, preValue) => {
+      startPercent2.value = preValue
+    })
 
     return {
       startVal,
       startPercent,
-      startPercent2,
-      updateStartVal
+      startPercent2
     }
   }
 }
