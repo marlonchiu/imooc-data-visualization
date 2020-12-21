@@ -131,15 +131,14 @@ export default {
         flex: 0 0 860px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
         width: 860px;
         height: 100%;
-        padding-bottom: 20px;
+        margin: 0 10px;
         box-sizing: border-box;
+        background: #3c3d40;
 
         .left1 {
           height: 300px;
-          //background: #7a7a7a;
         }
 
         .left2 {
@@ -162,8 +161,12 @@ export default {
         }
 
         .left6 {
-          height: 320px;
+          height: 360px;
           background: darkred;
+        }
+
+        & > div {
+          margin-bottom: 20px;
         }
       }
 
