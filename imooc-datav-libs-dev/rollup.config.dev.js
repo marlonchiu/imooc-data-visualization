@@ -47,7 +47,9 @@ module.exports = {
         ]
       ]
     }),
-    resolve(),
+    resolve({
+      preferBuiltins: true
+    }),
     commonjs(),
     json(),
     postcss({
