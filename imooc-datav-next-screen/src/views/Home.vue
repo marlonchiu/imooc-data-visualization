@@ -25,7 +25,9 @@
               :avg-age="averageAge"
             />
           </div>
-          <div class="left3">555</div>
+          <div class="left3">
+            555
+          </div>
           <div class="left4">666</div>
           <div class="left5">777</div>
           <div class="left6">888</div>
