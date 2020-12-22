@@ -1,10 +1,11 @@
 <template>
-  <div class="echarts" />
+  <div :class="[uuidChart, 'echarts']" />
 </template>
 
 <script>
 import Echarts from 'echarts'
 import { onMounted, watch } from 'vue'
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   name: 'VueNextEcharts',
@@ -14,13 +15,14 @@ export default {
   },
   setup (props) {
     let dom, chart
+    const uuidChart = `echarts-${uuidv4()}`
 
     const initChart = () => {
       if (!chart) {
-        dom = document.getElementsByClassName('echarts')[0]
+        dom = document.getElementsByClassName(uuidChart)[0]
         chart = Echarts.init(dom, props.theme)
       }
-      chart.setOption(props.options, props.theme)
+      chart && chart.setOption(props.options, true)
     }
 
     onMounted(() => {
@@ -30,6 +32,10 @@ export default {
     watch(() => props.options, () => {
       initChart()
     })
+
+    return {
+      uuidChart
+    }
   }
 }
 </script>

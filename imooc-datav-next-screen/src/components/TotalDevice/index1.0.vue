@@ -1,9 +1,7 @@
 <template>
   <div class="total-device">
     <div class="total-device-left">
-      <div id="total-device-chart">
-        <vue-next-echarts :options="options"/>
-      </div>
+      <div id="total-device-chart" />
     </div>
     <div class="total-device-right">
       <div class="title-wrapper">
@@ -43,6 +41,8 @@
 
 <script>
 import { ref, watch, onMounted } from 'vue'
+import * as Echarts from 'echarts'
+
 const color = ['rgb(176,207,120)', 'rgb(157,195,91)', 'rgb(131,167,72)']
 
 export default {
@@ -53,7 +53,7 @@ export default {
   setup (props) {
     const startTotal = ref(0)
     const devices = ref([])
-    const options = ref({})
+    let chart
 
     const updateChart = () => {
       function createOption () {
@@ -79,7 +79,10 @@ export default {
         }
       }
 
-      options.value = createOption()
+      if (!chart) {
+        chart = Echarts.init(document.getElementById('total-device-chart'))
+      }
+      chart.setOption(createOption(), true)
     }
 
     const formatData = (newData) => {
@@ -105,8 +108,7 @@ export default {
 
     return {
       startTotal,
-      devices,
-      options
+      devices
     }
   }
 }
