@@ -3,22 +3,13 @@
 ## Project setup
 ```
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## 存在的问题
 
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+1. Echarts5.0版本引入改变：
+   变化为 `import * as Echarts from 'echarts'`
+2. 使 Echarts5.0 版本中data 改变重绘
+   需要 `chart.setOption(options, true)`
