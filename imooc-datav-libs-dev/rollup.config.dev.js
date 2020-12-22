@@ -58,6 +58,7 @@ module.exports = {
   ],
   external: [
     // 作为外部模块，不会被打包到主文件中
-    'vue'
+    'vue',
+    'echarts'
   ]
 }

@@ -54,5 +54,5 @@ module.exports = {
     }),
     terser()
   ],
-  external: ['vue']
+  external: ['vue', 'echarts']
 }
