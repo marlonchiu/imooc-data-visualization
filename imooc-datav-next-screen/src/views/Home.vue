@@ -28,9 +28,15 @@
           <div class="left3">
             <total-device :data="deviceData" />
           </div>
-          <div class="left4">666</div>
-          <div class="left5">777</div>
-          <div class="left6">888</div>
+          <div class="left4">
+            <total-gender :data="genderData" />
+          </div>
+          <div class="left5">
+            <total-rider :data="riderData" />
+          </div>
+          <div class="left6">
+            <hot-category :data="hotCategoryData" />
+          </div>
         </div>
         <div class="right">
           <div class="right-top1">999</div>
@@ -58,8 +64,11 @@ import { ref, onMounted } from 'vue'
 import { useScreenData } from '@/hooks/useScreenData.js'
 import TopHeader from '@/components/TopHeader'
 import TotalUser from '@/components/TotalUser'
-import AverageAge from '@/components/AverageAge'
+import AverageAge from '@/components/AverageAge/index1.0'
 import TotalDevice from '@/components/TotalDevice'
+import TotalGender from '@/components/TotalGender'
+import TotalRider from '@/components/TotalRider'
+import HotCategory from '@/components/HotCategory'
 
 export default {
   name: 'Home',
@@ -67,7 +76,10 @@ export default {
     TopHeader,
     TotalUser,
     AverageAge,
-    TotalDevice
+    TotalDevice,
+    TotalGender,
+    TotalRider,
+    HotCategory
   },
   setup () {
     const loading = ref(true)
@@ -155,17 +167,14 @@ export default {
 
         .left4 {
           height: 230px;
-          background: mediumpurple;
         }
 
         .left5 {
           height: 360px;
-          background: pink;
         }
 
         .left6 {
           height: 360px;
-          background: darkred;
         }
 
         & > div {

@@ -9,15 +9,23 @@
       <div class="en-text">Imooc Delivery Overview of Business Data</div>
     </div>
     <div class="right-text">
-      <div class="date">2020-12-20</div>
-      <div class="time">18:24:05</div>
+      <div class="date">{{ date }}</div>
+      <div class="time">{{ time }}</div>
     </div>
   </div>
 </template>
 
 <script>
+import { useClock } from '@/hooks/useClock.js'
 export default {
-  name: 'TopHeader'
+  name: 'TopHeader',
+  setup () {
+    const { time, date } = useClock()
+    return {
+      time,
+      date
+    }
+  }
 }
 </script>
 
