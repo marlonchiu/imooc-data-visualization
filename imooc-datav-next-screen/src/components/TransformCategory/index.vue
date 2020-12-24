@@ -2,9 +2,15 @@
   <div class="transform-category">
     <div
       class="category"
-      v-for="(item, index) in data" :key="item"
+      v-for="(item, index) in data"
+      :key="item"
+      @click="onClick(index)"
+      @mouseenter="onMouseEnter(index)"
+      @mouseleave="onMouseLeave(index)"
+      @mousemove="onMouseEnter(index)"
     >
       <div v-if="index === selected" class="selected" :style="{background: color[0]}">{{item}}</div>
+      <div v-else-if="index === hover" class="selected" :style="{background: color[1]}">{{item}}</div>
       <div v-else>{{item}}</div>
     </div>
   </div>
@@ -25,6 +31,7 @@ export default {
   },
   setup (props) {
     const selected = ref(0)
+    const hover = ref(-1)
     let task
 
     const trigger = () => {
@@ -38,11 +45,27 @@ export default {
       }, 2000)
     }
 
+    const onClick = (index) => {
+      selected.value = index
+    }
+
+    const onMouseEnter = (index) => {
+      hover.value = index
+    }
+
+    const onMouseLeave = () => {
+      hover.value = -1
+    }
+
     onMounted(trigger)
     onUnmounted(() => task && clearInterval(task))
 
     return {
-      selected
+      selected,
+      hover,
+      onClick,
+      onMouseEnter,
+      onMouseLeave
     }
   }
 }
