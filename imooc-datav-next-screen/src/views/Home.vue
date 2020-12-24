@@ -42,11 +42,18 @@
           <div class="right-top1">
             <center-header :data="headerData" />
           </div>
-          <div class="right-top2">000</div>
+          <div class="right-top2">
+            <transform-category :data="countryCategoryData"/>
+          </div>
           <div class="right-bottom">
             <div class="right-left">
               <div class="right-left1">AAA</div>
-              <div class="right-left2">BBB</div>
+              <div class="right-left2">
+                <transform-category
+                  :data="indexCategoryData"
+                  :color="['rgb(178,209,126)', 'rgb(116,166,49)']"
+                />
+              </div>
               <div class="right-left3">CCC</div>
               <div class="right-left4">DDD</div>
             </div>
@@ -72,6 +79,7 @@ import TotalGender from '@/components/TotalGender'
 import TotalRider from '@/components/TotalRider'
 import HotCategory from '@/components/HotCategory'
 import CenterHeader from '@/components/CenterHeader'
+import TransformCategory from '@/components/TransformCategory'
 
 export default {
   name: 'Home',
@@ -83,7 +91,8 @@ export default {
     TotalGender,
     TotalRider,
     HotCategory,
-    CenterHeader
+    CenterHeader,
+    TransformCategory
   },
   setup () {
     const loading = ref(true)
@@ -205,7 +214,6 @@ export default {
           width: 100%;
           height: 48px;
           margin-bottom: 20px;
-          background: cadetblue;
         }
 
         .right-bottom {
@@ -225,7 +233,6 @@ export default {
             .right-left2 {
               height: 60px;
               margin-top: 20px;
-              background: deepskyblue;
             }
 
             .right-left3 {
