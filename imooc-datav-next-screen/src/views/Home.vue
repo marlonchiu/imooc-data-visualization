@@ -39,7 +39,9 @@
           </div>
         </div>
         <div class="right">
-          <div class="right-top1">999</div>
+          <div class="right-top1">
+            <center-header :data="headerData" />
+          </div>
           <div class="right-top2">000</div>
           <div class="right-bottom">
             <div class="right-left">
@@ -69,6 +71,7 @@ import TotalDevice from '@/components/TotalDevice'
 import TotalGender from '@/components/TotalGender'
 import TotalRider from '@/components/TotalRider'
 import HotCategory from '@/components/HotCategory'
+import CenterHeader from '@/components/CenterHeader'
 
 export default {
   name: 'Home',
@@ -79,7 +82,8 @@ export default {
     TotalDevice,
     TotalGender,
     TotalRider,
-    HotCategory
+    HotCategory,
+    CenterHeader
   },
   setup () {
     const loading = ref(true)
@@ -186,30 +190,31 @@ export default {
         flex: 1;
         display: flex;
         flex-direction: column;
-        background: blue;
+        height: 100%;
+        margin: 0 10px;
+        max-width: 2960px;
+        overflow: hidden;
 
         .right-top1 {
           width: 100%;
           height: 206px;
-          background: darkred;
+          margin-bottom: 20px;
         }
 
         .right-top2 {
           width: 100%;
           height: 48px;
+          margin-bottom: 20px;
           background: cadetblue;
         }
 
         .right-bottom {
           flex: 1;
           display: flex;
-          padding-bottom: 20px;
-          /* background: deeppink; */
 
           .right-left {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             width: 1917px;
 
             .right-left1 {
@@ -218,17 +223,20 @@ export default {
             }
 
             .right-left2 {
-              height: 80px;
+              height: 60px;
+              margin-top: 20px;
               background: deepskyblue;
             }
 
             .right-left3 {
               height: 350px;
+              margin-top: 10px;
               background: paleturquoise;
             }
 
             .right-left4 {
               height: 220px;
+              margin-top: 10px;
               background: orangered;
             }
           }
@@ -237,12 +245,13 @@ export default {
             flex: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             margin-left: 10px;
 
             .right-right1 {
               width: 100%;
               height: 999px;
+              padding-right: 10px;
+              box-sizing: border-box;
               background: burlywood;
             }
 
