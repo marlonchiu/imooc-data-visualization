@@ -10,6 +10,7 @@ import ImoocContainer from './components/ImoocContainer/index'
 import ImoocLogo from './components/ImoocLogo/index'
 import CountTo from './components/CountTo/index'
 import VueNextEcharts from './components/VueNextEcharts/index'
+import BaseScrollList from './components/BaseScrollList/index'
 
 export default function (Vue) {
   Vue.use(Test)
@@ -24,4 +25,5 @@ export default function (Vue) {
   Vue.use(ImoocLogo)
   Vue.use(CountTo)
   Vue.use(VueNextEcharts)
+  Vue.use(BaseScrollList)
 }
