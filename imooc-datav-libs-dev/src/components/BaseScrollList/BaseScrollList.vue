@@ -11,7 +11,10 @@
        class="header-item base-scroll-list-text"
        v-for="(headerItem, index) in headerData"
        :key="headerItem + index"
-       :style="headerStyle[index]"
+       :style="{
+         width: `${columnWidths[index]}px`,
+         ...headerStyle[index]
+       }"
        v-html="headerItem"
      >
 
@@ -62,6 +65,7 @@ export default {
 
     const headerData = ref([])
     const headerStyle = ref([])
+    const columnWidths = ref([])
 
     const handleHeader = (config) => {
       const _headerData = cloneDeep(config.headerData)
@@ -74,6 +78,22 @@ export default {
         _headerData.unshift(config.headerIndexContent)
         _headerStyle.unshift(config.headerIndexStyle)
       }
+      // 动态计算header 中每一列的宽度
+      let usedWidth = 0
+      let usedColumnNum = 0
+      // 判断是否自定义width
+      _headerStyle.forEach(style => {
+        // 如果自定义width，则按照自定义width进行渲染
+        if (style.width) {
+          usedWidth += +style.width.replace('px', '')
+          usedColumnNum++
+        }
+      })
+      // 动态计算列宽时，使用剩余的宽度除以剩余的列数
+      const headerLen = _headerData.length
+      const avgWidth = (width.value - usedWidth) / (headerLen - usedColumnNum)
+      const _columnWidths = new Array(headerLen).fill(avgWidth)
+      columnWidths.value = _columnWidths
 
       headerData.value = _headerData
       headerStyle.value = _headerStyle
@@ -82,14 +102,14 @@ export default {
     onMounted(() => {
       const _actualConfig = assign(defaultConfig, props.config)
       handleHeader(_actualConfig)
-
       actualConfig.value = _actualConfig
     })
 
     return {
       id,
       headerData,
-      headerStyle
+      headerStyle,
+      columnWidths
     }
   }
 }
