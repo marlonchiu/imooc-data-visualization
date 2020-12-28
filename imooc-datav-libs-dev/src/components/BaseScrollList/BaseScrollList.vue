@@ -3,8 +3,10 @@
    <div
      class="base-scroll-list-header"
      :style="{
-        backgroundColor: config.headerBg,
-        height: `${config.headerHeight}px`
+        backgroundColor: actualConfig.headerBg,
+        height: `${actualConfig.headerHeight}px`,
+        fontSize: `${actualConfig.headerFontSize}px`,
+        color: actualConfig.headerColor
      }"
    >
      <div
@@ -16,8 +18,8 @@
          ...headerStyle[index]
        }"
        v-html="headerItem"
+       :align="aligns[index]"
      >
-
      </div>
    </div>
    <div
@@ -27,6 +29,9 @@
      :style="{
        height: `${rowHeights[rowIndex]}px`,
        lineHeight: `${rowHeights[rowIndex]}px`,
+       backgroundColor: rowIndex % 2 === 0 ? rowBg[1] : rowBg[0],
+       fontSize: `${actualConfig.rowFontSize}px`,
+       color: actualConfig.rowColor
      }"
    >
      <div
@@ -35,8 +40,10 @@
        :key="colData + colIndex"
        :style="{
          width: `${columnWidths[colIndex]}px`,
+         ...rowStyle[colIndex]
        }"
        v-html="colData"
+       :align="aligns[colIndex]"
      >
      </div>
    </div>
@@ -55,6 +62,10 @@ const defaultConfig = {
   headerData: [],
   // 标题样式，格式：[{},{},{}]
   headerStyle: [],
+  // 行样式，格式：[{},{},{}]
+  rowStyle: [],
+  // 行背景色
+  rowBg: [],
   // 标题背景颜色
   headerBg: 'rgb(90, 90, 90)',
   // 标题背景颜色
@@ -67,10 +78,24 @@ const defaultConfig = {
   headerIndexStyle: {
     width: '50px'
   },
+  // 行序号内容展示样式
+  rowIndexStyle: {
+    width: '50px'
+  },
   // 表格数据项
   rowsData: [],
-  // 要显示行数
-  rowNum: 0
+  // 要显示行数(每页数据量)
+  rowNum: 0,
+  // 居中方式
+  aligns: [],
+  // 标题字体大小
+  headerFontSize: 28,
+  // 行字体大小
+  rowFontSize: 28,
+  // 标题字体颜色
+  headerColor: '#fff',
+  // 行字体颜色
+  rowColor: '#000',
 }
 
 export default {
@@ -88,15 +113,20 @@ export default {
 
     const headerData = ref([])
     const headerStyle = ref([])
+    const rowStyle = ref([])
+    const rowBg = ref([])
     const columnWidths = ref([])
     const rowHeights = ref([])
     const rowsData = ref([])
     const rowNum = ref(defaultConfig.rowNum)
+    const aligns = ref([])
 
     const handleHeader = (config) => {
       const _headerData = cloneDeep(config.headerData)
       const _headerStyle = cloneDeep(config.headerStyle)
+      const _rowStyle = cloneDeep(config.rowStyle)
       const _rowsData = cloneDeep(config.rowsData)
+      const _aligns = cloneDeep(config.aligns)
 
       if (_headerData.length === 0) {
         return false
@@ -104,19 +134,29 @@ export default {
       if (config.headerIndex) {
         _headerData.unshift(config.headerIndexContent)
         _headerStyle.unshift(config.headerIndexStyle)
+        _rowStyle.unshift(config.rowIndexStyle)
         _rowsData.forEach((rows, index) => {
           rows.unshift(index + 1)
         })
+        _aligns.unshift('center')
       }
+
       // 动态计算header 中每一列的宽度
       let usedWidth = 0
       let usedColumnNum = 0
+      // 判断是否自定义width
+      _headerStyle.forEach((style, index) => {
+        // 如果自定义width，则按照自定义width进行渲染
+        if (style.width) {
+          usedWidth += +style.width.replace('px', '')
+          usedColumnNum++
+        }
+      })
 
       // 动态计算列宽时，使用剩余的宽度除以剩余的列数
       const headerLen = _headerData.length
       const avgWidth = (width.value - usedWidth) / (headerLen - usedColumnNum)
       const _columnWidths = new Array(headerLen).fill(avgWidth)
-      // 判断是否自定义width
       _headerStyle.forEach((style, index) => {
         // 如果自定义width，则按照自定义width进行渲染
         if (style.width) {
@@ -124,12 +164,14 @@ export default {
           _columnWidths[index] = headerWidth
         }
       })
-      console.log(_columnWidths)
 
       columnWidths.value = _columnWidths
       headerData.value = _headerData
       headerStyle.value = _headerStyle
+      rowStyle.value = _rowStyle
       rowsData.value = _rowsData
+
+      aligns.value = _aligns
     }
 
     const handleRows = (config) => {
@@ -144,6 +186,11 @@ export default {
       }
       avgHeight = unusedHeight / rowNum.value
       rowHeights.value = new Array(rowNum.value).fill(avgHeight)
+
+      // 获取行背景色
+      if (config.rowBg) {
+        rowBg.value = config.rowBg
+      }
     }
 
     onMounted(() => {
@@ -157,8 +204,12 @@ export default {
 
     return {
       id,
+      actualConfig,
       headerData,
       headerStyle,
+      rowStyle,
+      rowBg,
+      aligns,
       columnWidths,
       rowHeights,
       rowsData
