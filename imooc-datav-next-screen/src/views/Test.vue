@@ -16,11 +16,19 @@ export default {
       headerStyle: [],
       headerBg: 'rgb(90, 90, 90)',
       headerHeight: 40,
-      headerIndex: true
+      headerIndex: true,
+      rowsData: [],
+      rowNum: 10
     })
     config.headerData = ['姓名', '年龄', '月薪']
-    config.headerStyle = [{ color: '#f00' }]
-
+    config.headerStyle = [{ color: '#f00' }, { width: '100px' }]
+    for (let i = 0; i < 10; i++) {
+      config.rowsData.push([
+        '同学' + (i + 1),
+        Math.floor(Math.random() * 10 + 20),
+        Math.floor(Math.random() * 10000 + 10000)
+      ])
+    }
     return {
       config
     }
