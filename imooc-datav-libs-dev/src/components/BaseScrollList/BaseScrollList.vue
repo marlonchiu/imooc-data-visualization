@@ -29,27 +29,27 @@
      }"
    >
      <div
-       class="base-scroll-list-rows"
-       v-for="(rowData, rowIndex) in currentRowsData"
-       :key="rowData + rowIndex"
+       class="base-scroll-list-rows base-scroll-list-text"
+       v-for="(rowData, index) in currentRowsData"
+       :key="rowData.rowIndex"
        :style="{
-         height: `${rowHeights[rowIndex]}px`,
-         lineHeight: `${rowHeights[rowIndex]}px`,
-         backgroundColor: rowIndex % 2 === 0 ? rowBg[1] : rowBg[0],
+         height: `${rowHeights[index]}px`,
+         lineHeight: `${rowHeights[index]}px`,
+         backgroundColor: rowData.rowIndex % 2 === 0 ? rowBg[1] : rowBg[0],
          fontSize: `${actualConfig.rowFontSize}px`,
          color: actualConfig.rowColor
        }"
      >
        <div
-           class="base-scroll-list-columns base-scroll-list-text"
-           v-for="(colData, colIndex) in rowData"
-           :key="colData + colIndex"
-           :style="{
-         width: `${columnWidths[colIndex]}px`,
-         ...rowStyle[colIndex]
-       }"
-           v-html="colData"
-           :align="aligns[colIndex]"
+         class="base-scroll-list-columns"
+         v-for="(colData, colIndex) in rowData.data"
+         :key="colData + colIndex"
+         :style="{
+           width: `${columnWidths[colIndex]}px`,
+           ...rowStyle[colIndex]
+         }"
+         v-html="colData"
+         :align="aligns[colIndex]"
        >
        </div>
      </div>
@@ -133,6 +133,7 @@ export default {
     const currentIndex = ref(0) // 动画指针
     const rowNum = ref(defaultConfig.rowNum)
     const aligns = ref([])
+    let avgHeight // 行高
 
     const handleHeader = (config) => {
       const _headerData = cloneDeep(config.headerData)
@@ -182,7 +183,10 @@ export default {
       headerData.value = _headerData
       headerStyle.value = _headerStyle
       rowStyle.value = _rowStyle
-      rowsData.value = _rowsData
+      rowsData.value = _rowsData.map((item, index) => ({
+        data: item,
+        rowIndex: index
+      }))
 
       aligns.value = _aligns
     }
@@ -192,7 +196,7 @@ export default {
       const { headerHeight } = config
       rowNum.value = config.rowNum
       const unusedHeight = height.value - headerHeight
-      let avgHeight
+
       // 如果rowNum大于实际数据长度，则以实际数据长度为准
       if (rowNum.value > rowsData.value.length) {
         rowNum.value = rowsData.value.length
@@ -222,6 +226,15 @@ export default {
       const rows = _rowsData.slice(index)
       rows.push(..._rowsData.slice(0, index))
       currentRowsData.value = rows
+
+      // 先将所有行的高度还原
+      rowHeights.value = new Array(totalLength).fill(avgHeight)
+      const waitTime = 300
+      await new Promise(resolve => setTimeout(resolve, waitTime))
+
+      // 将moveNum的行高度设置0
+      rowHeights.value.splice(0, moveNum, ...new Array(moveNum).fill(0))
+
       currentIndex.value += moveNum
       // 是否到达最后一组数据
       const isLast = currentIndex.value - totalLength
@@ -229,9 +242,8 @@ export default {
         currentIndex.value = isLast
       }
 
-      await new Promise(resolve => setTimeout(resolve,duration))
+      await new Promise(resolve => setTimeout(resolve, duration - waitTime))
       await startAnimation()
-
     }
 
     onMounted(() => {
@@ -290,7 +302,7 @@ export default {
     .base-scroll-list-rows {
       display: flex;
       align-items: center;
-      //transition: all 0.3s linear;
+      transition: all 0.3s linear;
 
       .base-scroll-list-columns {
         height: 100%;
