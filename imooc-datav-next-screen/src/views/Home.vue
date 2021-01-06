@@ -58,7 +58,9 @@
               <div class="right-left4">DDD</div>
             </div>
             <div class="right-right">
-              <div class="right-right1">EEE</div>
+              <div class="right-right1">
+                <sales-list :data="salesListData"/>
+              </div>
               <div class="right-right2">FFF</div>
             </div>
           </div>
@@ -80,6 +82,7 @@ import TotalRider from '@/components/TotalRider'
 import HotCategory from '@/components/HotCategory'
 import CenterHeader from '@/components/CenterHeader'
 import TransformCategory from '@/components/TransformCategory'
+import SalesList from '@/components/SalesList'
 
 export default {
   name: 'Home',
@@ -92,7 +95,8 @@ export default {
     TotalRider,
     HotCategory,
     CenterHeader,
-    TransformCategory
+    TransformCategory,
+    SalesList
   },
   setup () {
     const loading = ref(true)
@@ -259,7 +263,6 @@ export default {
               height: 999px;
               padding-right: 10px;
               box-sizing: border-box;
-              background: burlywood;
             }
 
             .right-right2 {

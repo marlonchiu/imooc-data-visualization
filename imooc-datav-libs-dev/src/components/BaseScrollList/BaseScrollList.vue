@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 import { useScreen } from '../../hooks/useScreen'
 import cloneDeep from 'lodash/cloneDeep'
@@ -85,6 +85,8 @@ const defaultConfig = {
   headerIndexStyle: {
     width: '50px'
   },
+  // 序号列的内容
+  headerIndexData: [],
   // 行序号内容展示样式
   rowIndexStyle: {
     width: '50px'
@@ -133,6 +135,7 @@ export default {
     const currentIndex = ref(0) // 动画指针
     const rowNum = ref(defaultConfig.rowNum)
     const aligns = ref([])
+    const isAnimationStop = ref(false)
     let avgHeight // 行高
 
     const handleHeader = (config) => {
@@ -150,7 +153,12 @@ export default {
         _headerStyle.unshift(config.headerIndexStyle)
         _rowStyle.unshift(config.rowIndexStyle)
         _rowsData.forEach((rows, index) => {
-          rows.unshift(index + 1)
+          // 处理序号列的数据
+          if(config.headerIndexData && config.headerIndexData.length > 0 && config.headerIndexData[index]) {
+            rows.unshift(config.headerIndexData[index])
+          } else {
+            rows.unshift(index + 1)
+          }
         })
         _aligns.unshift('center')
       }
@@ -237,6 +245,9 @@ export default {
       // 先将所有行的高度还原
       rowHeights.value = new Array(totalLength).fill(avgHeight)
       const waitTime = 300
+      if (isAnimationStop.value) {
+        return
+      }
       await new Promise(resolve => setTimeout(resolve, waitTime))
 
       // 将moveNum的行高度设置0
@@ -249,20 +260,35 @@ export default {
         currentIndex.value = isLast
       }
 
+      if (isAnimationStop.value) {
+        return
+      }
       await new Promise(resolve => setTimeout(resolve, duration - waitTime))
+      if (isAnimationStop.value) {
+        return
+      }
       await startAnimation()
     }
 
-    onMounted(() => {
+    const stopAnimation = () => {
+      isAnimationStop.value = true
+    }
+
+    const update = () => {
+      stopAnimation()
       const _actualConfig = assign(defaultConfig, props.config)
       // 赋值 rowsData
       rowsData.value = _actualConfig.rowsData || []
       handleHeader(_actualConfig)
       handleRows(_actualConfig)
       actualConfig.value = _actualConfig
-
       // 展示动画
+      isAnimationStop.value = false
       startAnimation()
+    }
+
+    watch(() => props.config, () => {
+      update()
     })
 
     return {
@@ -289,7 +315,7 @@ export default {
   height: 100%;
 
   .base-scroll-list-text {
-    padding: 0 10px;
+    //padding: 0 10px;
     box-sizing: border-box;
     overflow: hidden;
     white-space: nowrap;
