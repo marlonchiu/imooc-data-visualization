@@ -25,7 +25,7 @@ export default {
       headerHeight: 40,
       headerIndex: true,
       rowsData: [],
-      rowNum: 10
+      rowNum: 5
     })
     config.headerData = ['姓名', '年龄', '月薪']
     config.headerStyle = [{ color: '#f00' }, { width: '100px' }]
