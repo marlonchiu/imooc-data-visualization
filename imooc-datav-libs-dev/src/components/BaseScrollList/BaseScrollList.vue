@@ -183,11 +183,20 @@ export default {
       headerData.value = _headerData
       headerStyle.value = _headerStyle
       rowStyle.value = _rowStyle
-      rowsData.value = _rowsData.map((item, index) => ({
-        data: item,
-        rowIndex: index
-      }))
-
+      const { rowNum } = config
+      console.log(rowNum)
+      if(_rowsData.length >= rowNum && _rowsData.length < rowNum * 2) {
+        const newRowData = [..._rowsData, ..._rowsData]
+        rowsData.value = newRowData.map((item, index) => ({
+          data: item,
+          rowIndex: index
+        }))
+      } else {
+        rowsData.value = _rowsData.map((item, index) => ({
+          data: item,
+          rowIndex: index
+        }))
+      }
       aligns.value = _aligns
     }
 
@@ -214,7 +223,8 @@ export default {
       const config = actualConfig.value
       console.log(config)
       const { rowNum, moveNum, duration } = config
-      const totalLength = config.rowsData.length
+      const totalLength = rowsData.value.length
+      console.log(totalLength)
       if (totalLength < rowNum) return false
 
       const index = currentIndex.value
@@ -234,6 +244,7 @@ export default {
 
       // 将moveNum的行高度设置0
       rowHeights.value.splice(0, moveNum, ...new Array(moveNum).fill(0))
+      console.log(rowHeights.value)
 
       currentIndex.value += moveNum
       // 是否到达最后一组数据
