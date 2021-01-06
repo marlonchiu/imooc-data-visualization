@@ -89,8 +89,8 @@ const defaultConfig = {
   rowIndexStyle: {
     width: '50px'
   },
-  // 表格数据项
-  rowsData: [],
+  // 表格数据项，二维数组
+  data: [],
   // 要显示行数(每页数据量)
   rowNum: 0,
   // 居中方式
@@ -139,7 +139,7 @@ export default {
       const _headerData = cloneDeep(config.headerData)
       const _headerStyle = cloneDeep(config.headerStyle)
       const _rowStyle = cloneDeep(config.rowStyle)
-      const _rowsData = cloneDeep(config.rowsData)
+      const _rowsData = cloneDeep(config.data)
       const _aligns = cloneDeep(config.aligns)
 
       if (_headerData.length === 0) {
@@ -184,7 +184,6 @@ export default {
       headerStyle.value = _headerStyle
       rowStyle.value = _rowStyle
       const { rowNum } = config
-      console.log(rowNum)
       if(_rowsData.length >= rowNum && _rowsData.length < rowNum * 2) {
         const newRowData = [..._rowsData, ..._rowsData]
         rowsData.value = newRowData.map((item, index) => ({
@@ -201,7 +200,7 @@ export default {
     }
 
     const handleRows = (config) => {
-      console.log(config)
+      // console.log(config)
       const { headerHeight } = config
       rowNum.value = config.rowNum
       const unusedHeight = height.value - headerHeight
@@ -221,10 +220,8 @@ export default {
 
     const startAnimation = async () => {
       const config = actualConfig.value
-      console.log(config)
       const { rowNum, moveNum, duration } = config
       const totalLength = rowsData.value.length
-      console.log(totalLength)
       if (totalLength < rowNum) return false
 
       const index = currentIndex.value
@@ -244,7 +241,6 @@ export default {
 
       // 将moveNum的行高度设置0
       rowHeights.value.splice(0, moveNum, ...new Array(moveNum).fill(0))
-      console.log(rowHeights.value)
 
       currentIndex.value += moveNum
       // 是否到达最后一组数据

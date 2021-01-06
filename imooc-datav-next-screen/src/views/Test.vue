@@ -24,13 +24,13 @@ export default {
       aligns: ['center', 'center', 'right'],
       headerHeight: 40,
       headerIndex: true,
-      rowsData: [],
+      data: [],
       rowNum: 10
     })
     config.headerData = ['姓名', '年龄', '月薪']
     config.headerStyle = [{ color: '#f00' }, { width: '100px' }]
     for (let i = 0; i < 10; i++) {
-      config.rowsData.push([
+      config.data.push([
         '同学' + (i + 1),
         Math.floor(Math.random() * 10 + 20),
         Math.floor(Math.random() * 10000 + 10000)
