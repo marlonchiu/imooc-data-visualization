@@ -19,11 +19,14 @@ export default {
         .then(data => {
           console.log(data)
           echarts.registerMap('jiangsu', data)
-          const mapCenter = {}
+          const mapCenter = []
           data.features.forEach(item => {
             // console.log(item.properties)
             const { name, center } = item.properties
-            mapCenter[name] = center
+            mapCenter.push({
+              key: name,
+              value: center
+            })
           })
           console.log(mapCenter)
           options.value = {
@@ -56,39 +59,158 @@ export default {
                 shadowOffsetY: 15
               }
             }],
-            series: [{
-              type: 'map',
-              map: 'jiangsu',
-              zoom: 1,
-              roam: false,
-              label: {
-                show: true,
-                color: '#fff'
-              },
-              itemStyle: {
-                borderColor: '#2980b9',
-                borderWidth: 1,
-                areaColor: '#12235c'
-              },
-              emphasis: {
+            series: [
+              {
+                type: 'map',
+                map: 'jiangsu',
+                zoom: 1,
+                roam: false,
                 label: {
-                  color: '#fff',
-                  show: true
+                  show: true,
+                  color: '#fff'
                 },
                 itemStyle: {
-                  areaColor: '#fa8c16',
-                  borderWidth: 0
+                  borderColor: '#2980b9',
+                  borderWidth: 1,
+                  areaColor: '#12235c'
+                },
+                emphasis: {
+                  label: {
+                    color: '#fff',
+                    show: true
+                  },
+                  itemStyle: {
+                    areaColor: '#fa8c16',
+                    borderWidth: 0
+                  }
+                },
+                data: mapCenter.map(cItem => {
+                  const value = Math.random() * 100 // 模拟人口数据
+                  return {
+                    name: cItem.key,
+                    value
+                  }
+                })
+              },
+              {
+                type: 'effectScatter',
+                symbolSize: 14,
+                coordinateSystem: 'geo',
+                data: [{
+                  value: mapCenter[0].value,
+                  city: mapCenter[0].key
+                }],
+                itemStyle: {
+                  color: '#feae21'
+                },
+                label: {
+                  show: true,
+                  position: 'top',
+                  formatter: function (params) {
+                    console.log(params.data)
+                    const { city } = params.data
+                    return [
+                      `{title|${city}}`,
+                      '{content|发生XX事件}'
+                    ].join('\n')
+                    // return `{title|${city}}\n{content|发生XX事件}`
+                  },
+                  rich: {
+                    title: {
+                      padding: [10, 10, 0, 10],
+                      color: 'red'
+                    },
+                    content: {
+                      padding: [0, 10, 10, 10],
+                      color: '#fff'
+                    }
+                  },
+                  backgroundColor: 'rgba(254,174,33,.8)',
+                  padding: [0, 0],
+                  borderRadius: 3,
+                  lineHeight: 32,
+                  color: '#f7fafb'
                 }
               },
-              data: Object.keys(mapCenter).map(centerItem => {
-                const value = Math.random() * 100 // 模拟人口数据
-                console.log(centerItem, value)
-                return {
-                  name: centerItem,
-                  value
+              {
+                type: 'effectScatter',
+                symbolSize: 14,
+                coordinateSystem: 'geo',
+                data: [{
+                  value: mapCenter[2].value,
+                  city: mapCenter[2].key
+                }],
+                itemStyle: {
+                  color: '#feae21'
+                },
+                label: {
+                  show: true,
+                  position: 'top',
+                  formatter: function (params) {
+                    console.log(params.data)
+                    const { city } = params.data
+                    return [
+                      `{title|${city}}`,
+                      '{content|发生XX事件}'
+                    ].join('\n')
+                  },
+                  rich: {
+                    title: {
+                      padding: [10, 10, 0, 10],
+                      color: '#fff'
+                    },
+                    content: {
+                      padding: [0, 10, 10, 10],
+                      color: '#fff'
+                    }
+                  },
+                  backgroundColor: 'rgba(233,36,66,.9)',
+                  padding: [0, 0],
+                  borderRadius: 3,
+                  lineHeight: 32,
+                  color: '#f7fafb'
                 }
-              })
-            }]
+              },
+              {
+                type: 'effectScatter',
+                symbolSize: 14,
+                coordinateSystem: 'geo',
+                data: [{
+                  value: mapCenter[6].value,
+                  city: mapCenter[6].key
+                }],
+                itemStyle: {
+                  color: '#feae21'
+                },
+                label: {
+                  show: true,
+                  position: 'top',
+                  formatter: function (params) {
+                    console.log(params.data)
+                    const { city } = params.data
+                    return [
+                      `{title|${city}}`,
+                      '{content|发生XX事件}'
+                    ].join('\n')
+                  },
+                  rich: {
+                    title: {
+                      padding: [10, 10, 0, 10],
+                      color: '#fff'
+                    },
+                    content: {
+                      padding: [0, 10, 10, 10],
+                      color: '#fff'
+                    }
+                  },
+                  backgroundColor: 'rgba(8,186,236,.9)',
+                  padding: [0, 0],
+                  borderRadius: 3,
+                  lineHeight: 32,
+                  color: '#f7fafb'
+                }
+              }
+            ]
           }
         })
     }
