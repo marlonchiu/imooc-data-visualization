@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Test from '../views/Test.vue'
 import Timeline from '../views/Timeline.vue'
 import Map from '../views/Map.vue'
+import Earth from '../views/Earth.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/map',
     name: 'Map',
     component: Map
+  },
+  {
+    path: '/earth',
+    name: 'Earth',
+    component: Earth
   }
 ]
 

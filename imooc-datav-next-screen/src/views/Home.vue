@@ -47,7 +47,9 @@
           </div>
           <div class="right-bottom">
             <div class="right-left">
-              <div class="right-left1">AAA</div>
+              <div class="right-left1">
+                <rotating-earth />
+              </div>
               <div class="right-left2">
                 <transform-category
                   :data="indexCategoryData"
@@ -83,6 +85,7 @@ import HotCategory from '@/components/HotCategory'
 import CenterHeader from '@/components/CenterHeader'
 import TransformCategory from '@/components/TransformCategory'
 import SalesList from '@/components/SalesList'
+import RotatingEarth from '@/components/RotatingEarth'
 
 export default {
   name: 'Home',
@@ -96,7 +99,8 @@ export default {
     HotCategory,
     CenterHeader,
     TransformCategory,
-    SalesList
+    SalesList,
+    RotatingEarth
   },
   setup () {
     const loading = ref(true)
@@ -231,7 +235,6 @@ export default {
 
             .right-left1 {
               height: 999px;
-              background: red;
             }
 
             .right-left2 {
