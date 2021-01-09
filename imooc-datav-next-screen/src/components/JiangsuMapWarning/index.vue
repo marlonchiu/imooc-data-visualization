@@ -5,13 +5,15 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
+import cloneDeep from 'lodash/cloneDeep'
 
 export default {
   name: 'JiangsuMapWarning',
   setup () {
     const options = ref({})
+    let timer = null
 
     const update = () => {
       fetch('http://www.youbaobao.xyz/datav-res/datav/jiangsuMapData.json')
@@ -29,6 +31,7 @@ export default {
             })
           })
           console.log(mapCenter)
+
           options.value = {
             visualMap: {
               show: true,
@@ -96,10 +99,12 @@ export default {
                 type: 'effectScatter',
                 symbolSize: 14,
                 coordinateSystem: 'geo',
-                data: [{
-                  value: mapCenter[0].value,
-                  city: mapCenter[0].key
-                }],
+                data: [
+                  // {
+                  //   value: mapCenter[0].value,
+                  //   city: mapCenter[0].key
+                  // }
+                ],
                 itemStyle: {
                   color: '#feae21'
                 },
@@ -107,7 +112,7 @@ export default {
                   show: true,
                   position: 'top',
                   formatter: function (params) {
-                    console.log(params.data)
+                    // console.log(params.data)
                     const { city } = params.data
                     return [
                       `{title|${city}}`,
@@ -118,7 +123,7 @@ export default {
                   rich: {
                     title: {
                       padding: [10, 10, 0, 10],
-                      color: 'red'
+                      color: '#fff'
                     },
                     content: {
                       padding: [0, 10, 10, 10],
@@ -136,10 +141,7 @@ export default {
                 type: 'effectScatter',
                 symbolSize: 14,
                 coordinateSystem: 'geo',
-                data: [{
-                  value: mapCenter[2].value,
-                  city: mapCenter[2].key
-                }],
+                data: [],
                 itemStyle: {
                   color: '#feae21'
                 },
@@ -147,12 +149,8 @@ export default {
                   show: true,
                   position: 'top',
                   formatter: function (params) {
-                    console.log(params.data)
                     const { city } = params.data
-                    return [
-                      `{title|${city}}`,
-                      '{content|发生XX事件}'
-                    ].join('\n')
+                    return `{title|${city}}\n{content|发生XX事件}`
                   },
                   rich: {
                     title: {
@@ -175,10 +173,7 @@ export default {
                 type: 'effectScatter',
                 symbolSize: 14,
                 coordinateSystem: 'geo',
-                data: [{
-                  value: mapCenter[6].value,
-                  city: mapCenter[6].key
-                }],
+                data: [],
                 itemStyle: {
                   color: '#feae21'
                 },
@@ -186,12 +181,8 @@ export default {
                   show: true,
                   position: 'top',
                   formatter: function (params) {
-                    console.log(params.data)
                     const { city } = params.data
-                    return [
-                      `{title|${city}}`,
-                      '{content|发生XX事件}'
-                    ].join('\n')
+                    return `{title|${city}}\n{content|发生XX事件}`
                   },
                   rich: {
                     title: {
@@ -212,11 +203,33 @@ export default {
               }
             ]
           }
+
+          // 测试随机展示事件信息
+          timer = setInterval(() => {
+            const _options = cloneDeep(options.value)
+            // 初始化数据
+            for (let i = 1; i < 4; i++) {
+              _options.series[i].data = []
+            }
+            // 生成城市随机数
+            const cityLength = mapCenter.length
+            const cityIndex = Math.floor(Math.random() * cityLength)
+            const eventIndex = Math.floor(Math.random() * 3) + 1
+            // console.log(cityIndex, eventIndex)
+            _options.series[eventIndex].data = [{
+              value: mapCenter[cityIndex].value,
+              city: mapCenter[cityIndex].key
+            }]
+            options.value = _options
+          }, 1500)
         })
     }
+
     onMounted(() => {
       update()
     })
+
+    onUnmounted(() => timer && clearInterval(timer))
 
     return {
       options
