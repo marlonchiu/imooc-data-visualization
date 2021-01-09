@@ -4,6 +4,7 @@ import Test from '../views/Test.vue'
 import Timeline from '../views/Timeline.vue'
 import Map from '../views/Map.vue'
 import Earth from '../views/Earth.vue'
+import Flight from '../views/Flight.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/earth',
     name: 'Earth',
     component: Earth
+  },
+  {
+    path: '/flight',
+    name: 'Flight',
+    component: Flight
   }
 ]
 
