@@ -48,7 +48,7 @@
           <div class="right-bottom">
             <div class="right-left">
               <div class="right-left1">
-                <rotating-earth />
+                <order-map />
               </div>
               <div class="right-left2">
                 <transform-category
@@ -85,7 +85,7 @@ import HotCategory from '@/components/HotCategory'
 import CenterHeader from '@/components/CenterHeader'
 import TransformCategory from '@/components/TransformCategory'
 import SalesList from '@/components/SalesList'
-import RotatingEarth from '@/components/RotatingEarth'
+import OrderMap from '@/components/OrderMap'
 
 export default {
   name: 'Home',
@@ -100,7 +100,7 @@ export default {
     CenterHeader,
     TransformCategory,
     SalesList,
-    RotatingEarth
+    OrderMap
   },
   setup () {
     const loading = ref(true)
