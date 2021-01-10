@@ -81,6 +81,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { ref, onMounted } from 'vue'
 import { useScreenData } from '@/hooks/useScreenData.js'
 import TopHeader from '@/components/TopHeader'

@@ -34,7 +34,6 @@ export default {
         return data
       }
       const data = getVirtualData(2020)
-      console.log(data)
       options.value = {
         calendar: [{
           top: 30,
@@ -90,11 +89,13 @@ export default {
             rippleEffect: {
               brushType: 'stroke'
             },
-            hoverAnimation: true,
             itemStyle: {
               color: 'rgb(208,248,138)',
               shadowBlur: 10,
               shadowColor: '#333'
+            },
+            emphasis: {
+              scale: true
             },
             zlevel: 1
           }

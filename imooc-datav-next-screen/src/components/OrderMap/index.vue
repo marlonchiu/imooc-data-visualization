@@ -19,7 +19,6 @@ export default {
       fetch('http://www.youbaobao.xyz/datav-res/datav/map.json')
         .then(response => response.json())
         .then(data => {
-          console.log(data)
           /* eslint-disable */
           const geoGpsMap = {
             '1': [125.8154, 44.2584],
@@ -325,7 +324,6 @@ export default {
               categoryData[i].push(mapData[i][j].name)
             }
           }
-          console.log(mapData, categoryData, barData)
           /* eslint-enable */
           echarts.registerMap('china', data)
 

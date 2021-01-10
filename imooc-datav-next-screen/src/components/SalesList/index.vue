@@ -15,7 +15,6 @@ export default {
     const config = ref({})
 
     const update = () => {
-      console.log(props.data)
       const headerIndexData = []
       const data = []
       const aligns = []
@@ -77,7 +76,7 @@ export default {
         data,
         headerIndexData
       }
-      console.log(config.value)
+      // console.log(config.value)
     }
 
     onMounted(() => {
