@@ -61,7 +61,9 @@
                   <real-time-order :data="realTimeOrderData"/>
                 </imooc-fly-box>
               </div>
-              <div class="right-left4">DDD</div>
+              <div class="right-left4">
+                <schedule-view :data="scheduleViewData"/>
+              </div>
             </div>
             <div class="right-right">
               <div class="right-right1">
@@ -91,6 +93,7 @@ import TransformCategory from '@/components/TransformCategory'
 import SalesList from '@/components/SalesList'
 import OrderMap from '@/components/OrderMap'
 import RealTimeOrder from '@/components/RealTimeOrder'
+import ScheduleView from '@/components/ScheduleView/index'
 
 export default {
   name: 'Home',
@@ -106,7 +109,8 @@ export default {
     TransformCategory,
     SalesList,
     OrderMap,
-    RealTimeOrder
+    RealTimeOrder,
+    ScheduleView
   },
   setup () {
     const loading = ref(true)
@@ -256,7 +260,6 @@ export default {
             .right-left4 {
               height: 220px;
               margin-top: 10px;
-              background: orangered;
             }
           }
 
