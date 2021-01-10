@@ -110,6 +110,12 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  background: #424446;
+  border-radius: 10px;
+  box-shadow: 10px 10px 10px rgba(0,0,0,.3);
+
   svg {
     position: absolute;
     top: 0;
@@ -120,8 +126,8 @@ export default {
   .imooc-fly-box-content {
     width: 100%;
     height: 100%;
-    padding: 5px;
-    box-sizing: border-box;
+    /* padding: 5px;
+    box-sizing: border-box; */
   }
 }
 </style>
