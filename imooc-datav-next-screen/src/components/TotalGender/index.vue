@@ -63,7 +63,7 @@ export default {
     })
 
     onMounted(() => {
-      update(props.data)
+      props.data && props.data.length && update(props.data)
     })
     return {
       startFemale,

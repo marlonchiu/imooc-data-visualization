@@ -141,7 +141,7 @@ export default {
     })
 
     onMounted(() => {
-      update()
+      props.data && props.data.orderData && update()
     })
 
     onUnmounted(() => task && clearInterval(task))

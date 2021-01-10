@@ -95,12 +95,13 @@ export default {
 
     watch(() => props.data, (nextValue, preValue) => {
       startTotal.value = preValue.totalDevices
-      formatData(nextValue.devices)
+      nextValue.devices && formatData(nextValue.devices)
     })
 
     onMounted(() => {
-      startTotal.value = props.data.totalDevices
-      formatData(props.data.devices)
+      updateChart()
+      // startTotal.value = props.data.totalDevices
+      // props.data && props.data.devices && formatData(props.data.devices)
     })
 
     return {

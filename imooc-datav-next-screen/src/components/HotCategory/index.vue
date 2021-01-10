@@ -117,7 +117,7 @@ export default {
       update()
     })
     onMounted(() => {
-      update()
+      props.data && props.data.data1 && update()
     })
     return {
       options,
