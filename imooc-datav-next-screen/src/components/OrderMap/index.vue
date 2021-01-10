@@ -278,25 +278,25 @@ export default {
           const barData = []
           for (let key in geoCoordMap) {
             mapData[0].push({
-              'year': '长春',
+              'year': '北京',
               'name': key,
               'value': d1[key] / 100,
               'value1': d1[key] / 100
             })
             mapData[1].push({
-              'year': '长春',
+              'year': '上海',
               'name': key,
               'value': d1[key] / 100,
               'value1': d2[key] / 100
             })
             mapData[2].push({
-              'year': '青岛',
+              'year': '深圳',
               'name': key,
               'value': d3[key] / 100,
               'value1': d3[key] / 100
             })
             mapData[3].push({
-              'year': '青岛',
+              'year': '广州',
               'name': key,
               'value': d3[key] / 100,
               'value1': d4[key] / 100
@@ -308,7 +308,7 @@ export default {
               'value1': d5[key] / 100
             })
             mapData[5].push({
-              'year': '成都',
+              'year': '杭州',
               'name': key,
               'value': d5[key] / 100,
               'value1': d6[key] / 100
@@ -328,6 +328,48 @@ export default {
           console.log(mapData, categoryData, barData)
           /* eslint-enable */
           echarts.registerMap('china', data)
+
+          // 散点（气泡）图
+          const convertData = function (data) {
+            const res = []
+            for (let i = 0; i < data.length; i++) {
+              const geoCoord = geoCoordMap[data[i].name]
+              if (geoCoord) {
+                res.push({
+                  name: data[i].name,
+                  value: geoCoord.concat(data[i].value)
+                })
+              }
+            }
+            return res
+          }
+          // 飞线动画
+          const convertToLineData = function (data, gps) {
+            const res = []
+            for (let i = 0; i < data.length; i++) {
+              const dataItem = data[i]
+              const toCoord = geoCoordMap[dataItem.name]
+              const fromCoord = gps // 郑州
+              //  var toCoord = geoGps[Math.random()*3];
+              if (fromCoord && toCoord) {
+                res.push([{
+                  coord: fromCoord,
+                  value: dataItem.value
+                }, {
+                  coord: toCoord
+                }])
+              }
+            }
+            return res
+          }
+          // console.log(convertData(mapData[0]))
+          // console.log(convertToLineData(mapData[0], geoGpsMap[1]))
+          // const mm = convertToLineData(mapData[0], geoGpsMap[1]).map(item => {
+          //   return {
+          //     coords: [item[0].coord, item[1].coord]
+          //   }
+          // })
+          // console.log(mm)
 
           const _options = {
             timeline: {
@@ -424,9 +466,9 @@ export default {
                   shadowBlur: 10
                 },
                 emphasis: {
-                  // label: {
-                  //   show: false
-                  // },
+                  label: {
+                    show: false
+                  },
                   itemStyle: {
                     areaColor: '#389BB7',
                     borderWidth: 0
@@ -501,16 +543,72 @@ export default {
                 },
                 data: categoryData[i]
               },
-              series: [{
-                type: 'bar',
-                data: barData[i],
-                symbolSize: function (val) {
-                  return val[2] / 10
+              series: [
+                // TODO 地图点的动画效果
+                {
+                  type: 'effectScatter',
+                  coordinateSystem: 'geo',
+                  data: convertData(mapData[i]),
+                  symbolSize: function (val) {
+                    return val[2] / 10
+                  },
+                  showEffectOn: 'render',
+                  rippleEffect: {
+                    brushType: 'stroke'
+                  },
+                  // hoverAnimation: true,
+                  label: {
+                    show: true,
+                    position: 'right',
+                    formatter: function (params) {
+                      return params.data.name
+                    }
+                  },
+                  itemStyle: {
+                    color: colors[colorIndex][i],
+                    shadowBlur: 10,
+                    shadowColor: colors[colorIndex][i]
+                  },
+                  emphasis: {
+                    scale: true
+                  },
+                  zlevel: 1
                 },
-                itemStyle: {
-                  color: colors[colorIndex][i]
+                // TODO 地图线的动画效果
+                {
+                  type: 'lines',
+                  zlevel: 2,
+                  effect: {
+                    show: true,
+                    period: 4, // 箭头指向速度，值越小速度越快
+                    trailLength: 0.02, // 特效尾迹长度[0,1]值越大，尾迹越长重
+                    symbol: 'arrow', // 箭头图标
+                    symbolSize: 3 // 图标大小
+                  },
+                  lineStyle: {
+                    color: colors[colorIndex][i],
+                    width: 0.1, // 尾迹线条宽度
+                    opacity: 0.5, // 尾迹线条透明度
+                    curveness: 0.3 // 尾迹线条曲直度
+                  },
+                  data: convertToLineData(mapData[i], geoGpsMap[i + 1]).map(item => {
+                    return {
+                      coords: [item[0].coord, item[1].coord]
+                    }
+                  })
+                },
+                // TODO 柱状图
+                {
+                  type: 'bar',
+                  data: barData[i],
+                  symbolSize: function (val) {
+                    return val[2] / 10
+                  },
+                  itemStyle: {
+                    color: colors[colorIndex][i]
+                  }
                 }
-              }]
+              ]
             })
           }
           loading.value = false
