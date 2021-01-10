@@ -69,7 +69,9 @@
               <div class="right-right1">
                 <sales-list :data="salesListData"/>
               </div>
-              <div class="right-right2">FFF</div>
+              <div class="right-right2">
+                <sales-rank :data="salesRankData" />
+              </div>
             </div>
           </div>
         </div>
@@ -93,7 +95,8 @@ import TransformCategory from '@/components/TransformCategory'
 import SalesList from '@/components/SalesList'
 import OrderMap from '@/components/OrderMap'
 import RealTimeOrder from '@/components/RealTimeOrder'
-import ScheduleView from '@/components/ScheduleView/index'
+import ScheduleView from '@/components/ScheduleView'
+import SalesRank from '@/components/SalesRank'
 
 export default {
   name: 'Home',
@@ -110,7 +113,8 @@ export default {
     SalesList,
     OrderMap,
     RealTimeOrder,
-    ScheduleView
+    ScheduleView,
+    SalesRank
   },
   setup () {
     const loading = ref(true)
@@ -280,7 +284,6 @@ export default {
               width: 100%;
               flex: 1;
               margin-top: 20px;
-              background: palegreen;
             }
           }
         }
