@@ -53,15 +53,15 @@ export default {
     data: Object
   },
   setup (props) {
-    const project = ref([])
     const headerData = ref([])
+    const project = ref([])
     const iconData = ref(['money', 'orders', 'vip-member', 'user'])
     const update = () => {
-      project.value = [...props.data.project.value]
-      headerData.value = [...props.data.headerData.value]
+      headerData.value = props.data.headerData
+      project.value = props.data.project
     }
     onMounted(() => {
-      update()
+      props.data && props.data.length && update()
     })
     watch(() => props.data, () => {
       update()

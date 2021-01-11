@@ -127,7 +127,9 @@ export default {
         }
       })
     }
-    onMounted(update)
+    onMounted(() => {
+      props.data && props.data.length && update()
+    })
     watch(() => props.data, () => {
       update()
     })

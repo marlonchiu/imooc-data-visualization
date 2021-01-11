@@ -1,6 +1,9 @@
 <template>
   <div class="sales-list">
-    <base-scroll-list :config="config" />
+    <div data-v-3be73dcd="" class="title">区域销售大盘环比分析</div>
+    <div class="list">
+      <base-scroll-list :config="config" />
+    </div>
   </div>
 </template>
 
@@ -98,5 +101,22 @@ export default {
 .sales-list {
   width: 100%;
   height: 100%;
+  background: #373737;
+  padding: 20px 40px;
+  box-sizing: border-box;
+
+  .title {
+    font-size: 36px;
+    margin-left: 20px;
+  }
+
+  .list {
+    width: 100%;
+    height: 880px;
+    margin-top: 20px;
+    padding: 30px 0;
+    box-sizing: border-box;
+    background: #282828;
+  }
 }
 </style>

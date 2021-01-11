@@ -62,7 +62,7 @@
                 </imooc-fly-box>
               </div>
               <div class="right-left4">
-                <schedule-view :data="scheduleViewData"/>
+                <schedule-view />
               </div>
             </div>
             <div class="right-right">
