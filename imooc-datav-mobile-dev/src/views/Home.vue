@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div v-if="!loading" class="home">
     <div class="datav-wrapper"></div>
     <top-header />
     <sales-bar />
@@ -9,9 +9,13 @@
     <sales-sun />
     <sales-radar />
   </div>
+  <div v-else class="home">
+    <div class="loading-wrapper">{{ loadingText }}</div>
+  </div>
 </template>
 
 <script>
+import { screenMobileRequest } from '../api'
 import TopHeader from '../components/TopHeader'
 import SalesBar from '../components/SalesBar'
 import SalesLine from '../components/SalesLine'
@@ -32,7 +36,30 @@ export default {
     SalesRadar
   },
   data () {
-    return {}
+    return {
+      loading: true,
+      loadingText: '加载中.',
+      mobileData: null
+    }
+  },
+  mounted() {
+    this.task && clearInterval(this.task)
+    this.task = setInterval(() => {
+      if (this.loadingText === '加载中...') {
+        this.loadingText = '加载中.'
+      } else {
+        this.loadingText += '.'
+      }
+    }, 500)
+    this.loading = true
+    screenMobileRequest().then(response => {
+      console.log(response)
+      this.loading = false
+      this.task && clearInterval(this.task)
+      this.$nextTick(() => {
+        this.mobileData = response
+      })
+    })
   }
 }
 </script>
@@ -53,6 +80,16 @@ export default {
     background-image: url("//www.youbaobao.xyz/datav-res/datav/datav-mobile-bg.jpg");
     background-size: 100% 100%;
     background-repeat: no-repeat;
+  }
+
+  .loading-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: #ffffff;
   }
 }
 </style>
